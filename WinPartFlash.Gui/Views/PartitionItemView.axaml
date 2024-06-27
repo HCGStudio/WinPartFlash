@@ -1,0 +1,14 @@
+<reactiveui:ReactiveUserControl
+    x:TypeArguments="vm:PartitionItemViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:WinPartFlash.Gui.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    x:Class="WinPartFlash.Gui.Views.PartitionItemView"
+    x:DataType="vm:PartitionItemViewModel"
+    Initialized="PartitionItemViewInitialized"
+    xmlns:reactiveui="http://reactiveui.net">
+    <TextBlock Text="{Binding Value.Name}" />
+</reactiveui:ReactiveUserControl>

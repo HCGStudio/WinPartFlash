@@ -1,0 +1,68 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <PublishSingleFile>true</PublishSingleFile>
+        <SelfContained>false</SelfContained>
+        <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\**"/>
+    </ItemGroup>
+
+    <Target Name="BuildBinMac" BeforeTargets="Build" Condition="$([MSBuild]::IsOSPlatform('OSX'))">
+        <Exec Command="sh ./scripts/macos_build_binary.sh"/>
+    </Target>
+
+    <Target Name="CleanBinMac" BeforeTargets="Clean" Condition="$([MSBuild]::IsOSPlatform('OSX'))">
+        <Exec Command="sh ./scripts/macos_clean_binary.sh"/>
+    </Target>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="11.0.11"/>
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.11"/>
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.11"/>
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.11"/>
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.11"/>
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.11"/>
+        <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.0.10.9"/>
+        <PackageReference Include="MessageBox.Avalonia" Version="3.1.5.1"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0"/>
+        <PackageReference Include="Projektanker.Icons.Avalonia" Version="9.3.0"/>
+        <PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="9.3.0"/>
+        <PackageReference Include="System.Management" Version="8.0.0"/>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(RuntimeIdentifier)' == 'osx'">
+        <None Update="libWinPartFlashLib.dylib">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="Resources\Strings.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="Resources\Strings.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Strings.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Models\"/>
+    </ItemGroup>
+</Project>

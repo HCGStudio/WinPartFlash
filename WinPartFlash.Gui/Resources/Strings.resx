@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata"
+                id="root"
+                xmlns="">
+        <xsd:element name="root" msdata:IsDataSet="true">
+
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="AppName" xml:space="preserve">
+        <value>WinPartFlash</value>
+        <comment>App name shows as the title of the application.</comment>
+    </data>
+    <data name="SavePartition" xml:space="preserve">
+        <value>SavePartition</value>
+        <comment>Tab title of feature saving a partition to the disk.</comment>
+    </data>
+    <data name="WritePartition" xml:space="preserve">
+        <value>FlashPartition</value>
+        <comment>Table title of feature write an image file to a partition.</comment>
+    </data>
+    <data name="LabelPartition" xml:space="preserve">
+        <value>Partition</value>
+        <comment>A lable, identifying the combo box below is for select partition.</comment>
+    </data>
+    <data name="ReloadPartition" xml:space="preserve">
+        <value>Reload Partition</value>
+        <comment>A button to refresh partition table.</comment>
+    </data>
+    <data name="SaveButton" xml:space="preserve">
+        <value>Save</value>
+        <comment>A button to save partition to a file.</comment>
+    </data>
+    <data name="WriteButton" xml:space="preserve">
+        <value>Flash</value>
+        <comment>A button to write a file content to a partition.</comment>
+    </data>
+    <data name="ErrorNoPartition" xml:space="preserve">
+        <value>No partition found on your device, try re-run this app with "sudo".</value>
+        <comment>A error message to tell user no partition found on device, and suggest to run with sudo.</comment>
+    </data>
+    <data name="LabelFileToSave" xml:space="preserve">
+        <value>File to save</value>
+        <comment>A lable, identifying the textbox  below is for select file to save.</comment>
+    </data>
+    <data name="LabelFileToFlash" xml:space="preserve">
+        <value>Image to flash (Support HTTP)</value>
+        <comment>A lable, identifying the textbox  below is for select file to read and write content to Partition.</comment>
+    </data>
+    <data name="LabelFormat" xml:space="preserve">
+        <value>Format</value>
+        <comment>A lable, identifying the radiobuttons  below is for select format image to save.</comment>
+    </data>
+    <data name="BrowseButton" xml:space="preserve">
+        <value>Browse</value>
+        <comment>A button to browse file on the disk.</comment>
+    </data>
+    <data name="FileTypeNameDiskImages" xml:space="preserve">
+        <value>Disk Images</value>
+        <comment>File type name of disk images.</comment>
+    </data>
+    <data name="ConfirmFlashText" xml:space="preserve">
+        <value>Are you sure to flash to a {0} partition {1}?</value>
+        <comment>A confirmation text to show before flash action. {0} is the size of the partition, and {1} is the partition name.</comment>
+    </data>
+</root>

@@ -25,6 +25,30 @@ public class PartFlashService
 
     public bool IsVerified { get; set; }
 
+    public void OpenNewDisk(string disk)
+    {
+        if (Disk != null) throw new ArgumentException("Old dis is not closed.");
+
+        Disk = File.Open(
+            disk,
+            FileMode.Open,
+            FileAccess.ReadWrite,
+            FileShare.ReadWrite);
+
+        UpdateDiskSectorSize(disk);
+        VerifyDisk();
+    }
+
+    public void Close()
+    {
+        if (Disk == null)
+            return;
+
+        Disk.Dispose();
+        Disk = null;
+        IsVerified = false;
+    }
+
     private void UpdateDiskSectorSize(string name)
     {
         _diskSectorSize = OperatingSystem.IsWindows() ? GetDiskSectorSizeWindows(name) : GetDiskSectorSizePosix(name);
@@ -50,30 +74,6 @@ public class PartFlashService
     {
         // TODO: Implement this
         return 4096;
-    }
-
-    public void OpenNewDisk(string disk)
-    {
-        if (Disk != null) throw new ArgumentException("Old dis is not closed.");
-
-        Disk = File.Open(
-            disk,
-            FileMode.Open,
-            FileAccess.ReadWrite,
-            FileShare.ReadWrite);
-
-        UpdateDiskSectorSize(disk);
-        VerifyDisk();
-    }
-
-    public void Close()
-    {
-        if (Disk == null)
-            return;
-
-        Disk.Dispose();
-        Disk = null;
-        IsVerified = false;
     }
 
     private unsafe void VerifyDisk()

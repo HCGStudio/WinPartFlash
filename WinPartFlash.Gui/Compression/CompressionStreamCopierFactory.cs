@@ -11,10 +11,13 @@ public class CompressionStreamCopierFactory(IServiceProvider serviceProvider) : 
         {
             CompressionType.Raw => serviceProvider.GetRequiredService<RawStreamCopier>(),
             CompressionType.GzipCompress => serviceProvider.GetRequiredService<GzipCompressionStreamCopier>(),
-            CompressionType.GzipDecompress => serviceProvider.GetRequiredService<GzipDeCompressionStreamCopier>(),
-            // TODO: Support following methods
-            CompressionType.Lz4Compress => throw new NotSupportedException(),
-            CompressionType.Lz4Decompress => throw new NotSupportedException(),
+            CompressionType.GzipDecompress => serviceProvider.GetRequiredService<GzipDecompressionStreamCopier>(),
+            CompressionType.Lz4Compress => serviceProvider.GetRequiredService<Lz4CompressionStreamCopier>(),
+            CompressionType.Lz4Decompress => serviceProvider.GetRequiredService<Lz4DecompressionStreamCopier>(),
+            CompressionType.XzDecompress => serviceProvider.GetRequiredService<XzDecompressionStreamCopier>(),
+            CompressionType.ZstandardCompress => serviceProvider.GetRequiredService<ZstandardCompressionStreamCopier>(),
+            CompressionType.ZstandardDecompress => serviceProvider
+                .GetRequiredService<ZstandardDecompressionStreamCopier>(),
             _ => throw new ArgumentOutOfRangeException(nameof(compressionType), compressionType, null)
         };
     }

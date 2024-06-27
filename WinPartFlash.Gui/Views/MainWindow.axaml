@@ -59,7 +59,8 @@
                     <!-- Below are image file types and should not localize. -->
                     <RadioButton Content="raw" IsChecked="{Binding IsSaveRawFileChecked}" />
                     <RadioButton Content="gz" IsChecked="{Binding IsSaveGzipFileChecked}" />
-                    <RadioButton Content="lz4" IsEnabled="False" />
+                    <RadioButton Content="lz4" IsChecked="{Binding IsSaveLz4FileChecked}" />
+                    <RadioButton Content="zst" IsChecked="{Binding IsSaveZstandardFileChecked}" />
                 </StackPanel>
 
                 <ProgressBar Margin="0 0 0 10"

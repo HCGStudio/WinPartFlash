@@ -21,24 +21,38 @@ namespace WinPartFlash.Gui.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    private static readonly List<string> RawTrimEndings = [".gz", ".lz4"];
+    private static readonly List<string> RawTrimEndings =
+    [
+        FileNameHelpers.FileExtensionGzip,
+        FileNameHelpers.FileExtensionLz4,
+        FileNameHelpers.FileExtensionZstandard
+    ];
 
     private static readonly FilePickerFileType DiskImage = new(Strings.FileTypeNameDiskImages)
     {
-        Patterns = ["*.img", "*.img.gz"]
+        Patterns =
+        [
+            "*" + FileNameHelpers.FileExtensionImage,
+            "*" + FileNameHelpers.FileExtensionImage + FileNameHelpers.FileExtensionGzip,
+            "*" + FileNameHelpers.FileExtensionImage + FileNameHelpers.FileExtensionLz4,
+            "*" + FileNameHelpers.FileExtensionImage + FileNameHelpers.FileExtensionZstandard
+        ]
     };
 
     private readonly IPartitionDetector _partitionDetector;
     private readonly ICompressionStreamCopierFactory _streamCopierFactory;
     private readonly IFileOpenHelper _fileOpenHelper;
 
-    private readonly ObservableAsPropertyHelper<CompressionType> _compressionType;
     private readonly ObservableAsPropertyHelper<bool> _isMainWindowEnabled;
     private readonly ObservableAsPropertyHelper<bool> _isSaveButtonEnabled;
     private readonly ObservableAsPropertyHelper<bool> _isFlashButtonEnabled;
 
+    private CompressionType _compressionType;
+
     private bool _isSaveGzipFileChecked;
     private bool _isSaveRawFileChecked = true;
+    private bool _isSaveZstandardFileChecked;
+    private bool _isSaveLz4FileChecked;
     private bool _isBackgroundTaskRunning;
 
     private int _progress;
@@ -64,27 +78,43 @@ public class MainWindowViewModel : ViewModelBase
         SavePartitionCommand = ReactiveCommand.CreateFromTask<Visual?>(SavePartition);
         FlashPartitionCommand = ReactiveCommand.CreateFromTask<Visual?>(FlashPartition);
 
-        _compressionType = this
-            .WhenAnyValue(vm => vm.IsSaveRawFileChecked,
-                vm => vm.IsSaveGzipFileChecked)
-            .Select(tuple =>
+        // Subscribe to update compression type by clicking button
+        this
+            .WhenAnyValue(vm => vm.IsSaveRawFileChecked)
+            .Subscribe(enabled =>
             {
-                var (rawChecked, gzipChecked) = tuple;
-                if (rawChecked)
-                    return CompressionType.Raw;
-                if (gzipChecked)
-                    return CompressionType.GzipCompress;
-                return CompressionType.Raw;
-            })
-            .ToProperty(this, vm => vm.CompressionType);
+                if (enabled) CompressionType = CompressionType.Raw;
+            });
 
+        this
+            .WhenAnyValue(vm => vm.IsSaveGzipFileChecked)
+            .Subscribe(enabled =>
+            {
+                if (enabled) CompressionType = CompressionType.GzipCompress;
+            });
+
+        this
+            .WhenAnyValue(vm => vm.IsSaveLz4FileChecked)
+            .Subscribe(enabled =>
+            {
+                if (enabled) CompressionType = CompressionType.Lz4Compress;
+            });
+
+        this
+            .WhenAnyValue(vm => vm.IsSaveZstandardFileChecked)
+            .Subscribe(enabled =>
+            {
+                if (enabled) CompressionType = CompressionType.ZstandardCompress;
+            });
+
+        //Subscribe to update file name after compression type updated
         this
             .WhenAnyValue(vm => vm.CompressionType)
             .Subscribe(type =>
             {
                 var ending = RawTrimEndings.FirstOrDefault(e => SavePartitionFileName.EndsWith(e));
                 var rawFileName = ending == null ? SavePartitionFileName : SavePartitionFileName[..^ending.Length];
-                switch (CompressionType)
+                switch (type)
                 {
                     case CompressionType.Raw:
                         if (!string.IsNullOrWhiteSpace(rawFileName))
@@ -92,23 +122,32 @@ public class MainWindowViewModel : ViewModelBase
                         break;
                     case CompressionType.GzipCompress:
                         if (!string.IsNullOrWhiteSpace(rawFileName))
-                            SavePartitionFileName = rawFileName + ".gz";
+                            SavePartitionFileName = rawFileName + FileNameHelpers.FileExtensionGzip;
                         break;
                     case CompressionType.Lz4Compress:
                         if (!string.IsNullOrWhiteSpace(rawFileName))
-                            SavePartitionFileName = rawFileName + ".lz4";
+                            SavePartitionFileName = rawFileName + FileNameHelpers.FileExtensionLz4;
+                        break;
+                    case CompressionType.ZstandardCompress:
+                        if (!string.IsNullOrWhiteSpace(rawFileName))
+                            SavePartitionFileName = rawFileName + FileNameHelpers.FileExtensionZstandard;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
             });
 
+        // Subscribe to update button status after file name updated
         this
             .WhenAnyValue(vm => vm.SavePartitionFileName)
             .Subscribe(name =>
             {
-                if (name.EndsWith(".gz"))
+                if (name.EndsWith(FileNameHelpers.FileExtensionGzip))
                     IsSaveGzipFileChecked = true;
+                else if (name.EndsWith(FileNameHelpers.FileExtensionLz4))
+                    IsSaveLz4FileChecked = true;
+                else if (name.EndsWith(FileNameHelpers.FileExtensionZstandard))
+                    IsSaveZstandardFileChecked = true;
                 else
                     IsSaveRawFileChecked = true;
             });
@@ -137,6 +176,18 @@ public class MainWindowViewModel : ViewModelBase
                 return selectedPartition?.Value.Length != 0 && _fileOpenHelper.IsSupported(fileName);
             })
             .ToProperty(this, vm => vm.IsFlashButtonEnabled);
+    }
+
+    public bool IsSaveZstandardFileChecked
+    {
+        get => _isSaveZstandardFileChecked;
+        set => this.RaiseAndSetIfChanged(ref _isSaveZstandardFileChecked, value);
+    }
+
+    public bool IsSaveLz4FileChecked
+    {
+        get => _isSaveLz4FileChecked;
+        set => this.RaiseAndSetIfChanged(ref _isSaveLz4FileChecked, value);
     }
 
     public bool IsFlashButtonEnabled => _isFlashButtonEnabled.Value;
@@ -198,7 +249,11 @@ public class MainWindowViewModel : ViewModelBase
     public ReactiveCommand<Visual?, Unit> SavePartitionCommand { get; }
     public ReactiveCommand<Visual?, Unit> FlashPartitionCommand { get; }
 
-    private CompressionType CompressionType => _compressionType.Value;
+    private CompressionType CompressionType
+    {
+        get => _compressionType;
+        set => this.RaiseAndSetIfChanged(ref _compressionType, value);
+    }
 
     private static Window? GetVisualTopWindow(Visual? visual)
     {

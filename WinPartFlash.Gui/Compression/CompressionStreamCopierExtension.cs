@@ -8,7 +8,12 @@ public static class CompressionStreamCopierExtension
     {
         services.AddSingleton<RawStreamCopier>();
         services.AddSingleton<GzipCompressionStreamCopier>();
-        services.AddSingleton<GzipDeCompressionStreamCopier>();
+        services.AddSingleton<GzipDecompressionStreamCopier>();
+        services.AddSingleton<XzDecompressionStreamCopier>();
+        services.AddSingleton<ZstandardCompressionStreamCopier>();
+        services.AddSingleton<ZstandardDecompressionStreamCopier>();
+        services.AddSingleton<Lz4CompressionStreamCopier>();
+        services.AddSingleton<Lz4DecompressionStreamCopier>();
         services.AddSingleton<ICompressionStreamCopierFactory, CompressionStreamCopierFactory>();
         return services;
     }

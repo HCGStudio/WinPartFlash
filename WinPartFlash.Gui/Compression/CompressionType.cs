@@ -6,5 +6,8 @@ public enum CompressionType
     GzipCompress,
     GzipDecompress,
     Lz4Compress,
-    Lz4Decompress
+    Lz4Decompress,
+    ZstandardCompress,
+    ZstandardDecompress,
+    XzDecompress
 }

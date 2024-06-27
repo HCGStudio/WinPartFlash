@@ -1,14 +1,14 @@
 using System.IO;
-using System.IO.Compression;
 using System.Threading.Tasks;
+using SharpCompress.Compressors.Xz;
 
 namespace WinPartFlash.Gui.Compression;
 
-public class GzipDecompressionStreamCopier : ICompressionStreamCopier
+public class XzDecompressionStreamCopier : ICompressionStreamCopier
 {
     public async ValueTask CopyToStreamAsync(Stream sourceStream, Stream outputStream)
     {
-        await using var decompressionStream = new GZipStream(sourceStream, CompressionMode.Decompress);
+        await using var decompressionStream = new XZStream(sourceStream);
         await decompressionStream.CopyToAsync(outputStream);
     }
 }

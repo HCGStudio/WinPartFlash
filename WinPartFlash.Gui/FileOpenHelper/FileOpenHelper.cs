@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using WinPartFlash.Gui.Compression;
+using WinPartFlash.Gui.Utils;
 
 namespace WinPartFlash.Gui.FileOpenHelper;
 
@@ -13,8 +14,11 @@ public class FileOpenHelper(IHttpClientFactory clientFactory) : IFileOpenHelper
     private static readonly Dictionary<string, CompressionType> ContentTypeMapping =
         new()
         {
-            { "application/gzip", CompressionType.GzipDecompress },
-            { "application/x-gzip", CompressionType.GzipDecompress }
+            { FileNameHelpers.ContentTypeGzip, CompressionType.GzipDecompress },
+            { FileNameHelpers.ContentTypeGzipDeprecated, CompressionType.GzipDecompress },
+            { FileNameHelpers.ContentTypeXz, CompressionType.XzDecompress },
+            { FileNameHelpers.ContentTypeLz4, CompressionType.Lz4Compress },
+            { FileNameHelpers.ContentTypeZstandard, CompressionType.ZstandardDecompress }
         };
 
     private readonly IReadOnlyList<IFileOpenHelper> _helpers =
@@ -26,10 +30,16 @@ public class FileOpenHelper(IHttpClientFactory clientFactory) : IFileOpenHelper
     private static CompressionType DetectFromFileName(string fileName)
     {
         fileName = fileName.Trim('\"');
-        if (fileName.EndsWith(".gz"))
+        if (fileName.EndsWith(FileNameHelpers.FileExtensionGzip))
             return CompressionType.GzipDecompress;
-        if (fileName.EndsWith(".lz4"))
+        if (fileName.EndsWith(FileNameHelpers.FileExtensionLz4))
             return CompressionType.Lz4Decompress;
+        if (fileName.EndsWith(FileNameHelpers.FileExtensionXz))
+            return CompressionType.XzDecompress;
+        if (fileName.EndsWith(FileNameHelpers.FileExtensionLz4))
+            return CompressionType.Lz4Decompress;
+        if (fileName.EndsWith(FileNameHelpers.FileExtensionZstandard))
+            return CompressionType.ZstandardDecompress;
 
         return CompressionType.Raw;
     }

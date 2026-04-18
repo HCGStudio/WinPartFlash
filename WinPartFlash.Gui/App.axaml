@@ -2,15 +2,47 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="WinPartFlash.Gui.App"
              xmlns:local="using:WinPartFlash.Gui"
-             RequestedThemeVariant="Default">
-    <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+             RequestedThemeVariant="Light">
 
     <Application.DataTemplates>
         <local:ViewLocator />
     </Application.DataTemplates>
 
+    <Application.Resources>
+        <ResourceDictionary>
+            <!-- Cohere-inspired palette -->
+            <Color x:Key="CohereBlackColor">#000000</Color>
+            <Color x:Key="NearBlackColor">#212121</Color>
+            <Color x:Key="DeepDarkColor">#17171c</Color>
+            <Color x:Key="InteractionBlueColor">#1863dc</Color>
+            <Color x:Key="FocusPurpleColor">#9b60aa</Color>
+            <Color x:Key="PureWhiteColor">#ffffff</Color>
+            <Color x:Key="SnowColor">#fafafa</Color>
+            <Color x:Key="LightestGrayColor">#f2f2f2</Color>
+            <Color x:Key="MutedSlateColor">#93939f</Color>
+            <Color x:Key="BorderCoolColor">#d9d9dd</Color>
+            <Color x:Key="BorderLightColor">#e5e7eb</Color>
+
+            <SolidColorBrush x:Key="CohereBlack" Color="{StaticResource CohereBlackColor}" />
+            <SolidColorBrush x:Key="NearBlack" Color="{StaticResource NearBlackColor}" />
+            <SolidColorBrush x:Key="DeepDark" Color="{StaticResource DeepDarkColor}" />
+            <SolidColorBrush x:Key="InteractionBlue" Color="{StaticResource InteractionBlueColor}" />
+            <SolidColorBrush x:Key="FocusPurple" Color="{StaticResource FocusPurpleColor}" />
+            <SolidColorBrush x:Key="PureWhite" Color="{StaticResource PureWhiteColor}" />
+            <SolidColorBrush x:Key="Snow" Color="{StaticResource SnowColor}" />
+            <SolidColorBrush x:Key="LightestGray" Color="{StaticResource LightestGrayColor}" />
+            <SolidColorBrush x:Key="MutedSlate" Color="{StaticResource MutedSlateColor}" />
+            <SolidColorBrush x:Key="BorderCool" Color="{StaticResource BorderCoolColor}" />
+            <SolidColorBrush x:Key="BorderLight" Color="{StaticResource BorderLightColor}" />
+
+            <FontFamily x:Key="DisplayFont">Space Grotesk, Inter, ui-sans-serif</FontFamily>
+            <FontFamily x:Key="BodyFont">Inter, ui-sans-serif</FontFamily>
+            <FontFamily x:Key="MonoFont">Menlo, Consolas, ui-monospace</FontFamily>
+        </ResourceDictionary>
+    </Application.Resources>
+
     <Application.Styles>
-        <FluentTheme />
+        <StyleInclude Source="avares://WinPartFlash.Gui/Themes/CohereTheme.axaml" />
     </Application.Styles>
 
     <NativeMenu.Menu>

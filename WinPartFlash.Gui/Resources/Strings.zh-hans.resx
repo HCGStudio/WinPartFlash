@@ -57,4 +57,52 @@
     <data name="ConfirmFlashText" xml:space="preserve">
         <value>是否要写入{0}大小的分区{1}？</value>
     </data>
+    <data name="AppSubtitle" xml:space="preserve">
+        <value>对块级分区进行镜像与刷写。</value>
+    </data>
+    <data name="SectionSource" xml:space="preserve">
+        <value>来源</value>
+    </data>
+    <data name="SectionDestination" xml:space="preserve">
+        <value>目标</value>
+    </data>
+    <data name="SectionFormat" xml:space="preserve">
+        <value>格式</value>
+    </data>
+    <data name="SectionProgress" xml:space="preserve">
+        <value>进度</value>
+    </data>
+    <data name="SectionTarget" xml:space="preserve">
+        <value>目标分区</value>
+    </data>
+    <data name="SectionStatus" xml:space="preserve">
+        <value>状态</value>
+    </data>
+    <data name="TabAdvanced" xml:space="preserve">
+        <value>高级</value>
+    </data>
+    <data name="AdvancedComingSoon" xml:space="preserve">
+        <value>开发中，敬请期待！</value>
+    </data>
+    <data name="MenuFile" xml:space="preserve">
+        <value>文件</value>
+    </data>
+    <data name="MenuSavePartition" xml:space="preserve">
+        <value>保存分区</value>
+    </data>
+    <data name="MenuFlashPartition" xml:space="preserve">
+        <value>刷写分区</value>
+    </data>
+    <data name="MenuAdvanced" xml:space="preserve">
+        <value>高级</value>
+    </data>
+    <data name="MenuSettings" xml:space="preserve">
+        <value>设置</value>
+    </data>
+    <data name="SaveFileDialogTitle" xml:space="preserve">
+        <value>保存文件</value>
+    </data>
+    <data name="ConfirmDialogTitle" xml:space="preserve">
+        <value>确认</value>
+    </data>
 </root>

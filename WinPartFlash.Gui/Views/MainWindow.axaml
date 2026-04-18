@@ -6,15 +6,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:lang="clr-namespace:WinPartFlash.Gui.Resources"
-    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="560"
     x:Class="WinPartFlash.Gui.Views.MainWindow"
     xmlns:reactiveui="http://reactiveui.net"
     xmlns:avalonia="https://github.com/projektanker/icons.avalonia"
     x:DataType="vm:MainWindowViewModel"
     Icon="/Assets/avalonia-logo.ico"
     SizeToContent="WidthAndHeight"
-    MinWidth="500"
+    MinWidth="600"
     CanResize="False"
+    Background="{StaticResource PureWhite}"
     IsEnabled="{Binding IsMainWindowEnabled}"
     Title="{x:Static lang:Strings.AppName}">
 
@@ -24,116 +25,154 @@
         </EventTriggerBehavior>
     </Interaction.Behaviors>
 
-    <TabControl Margin="10">
-        <TabItem Header="{x:Static lang:Strings.SavePartition}">
-            <StackPanel>
-                <Label Content="{x:Static lang:Strings.LabelPartition}" />
-                <Grid ColumnDefinitions="*,Auto" Margin="0 0 0 10">
-                    <ComboBox Grid.Column="0"
-                              HorizontalAlignment="Stretch"
-                              Margin="0 0 5 0"
-                              ItemsSource="{Binding PartitionItems}"
-                              SelectedItem="{Binding SelectedPartition}" />
-                    <Button Grid.Column="1"
-                            avalonia:Attached.Icon="fa-solid fa-arrows-rotate"
-                            FontSize="18"
-                            ToolTip.Tip="{x:Static lang:Strings.ReloadPartition}"
-                            VerticalAlignment="Top"
-                            Command="{Binding LoadPartitionsCommand}" />
-                </Grid>
+    <Border Margin="32" Classes="Card">
+        <StackPanel Spacing="20">
 
-                <Label Content="{x:Static lang:Strings.LabelFileToSave}" />
-                <Grid ColumnDefinitions="*,Auto" Margin="0 0 0 10">
-                    <TextBox Grid.Column="0"
-                             Margin="0 0 5 0"
-                             Text="{Binding SavePartitionFileName}" />
-                    <Button Grid.Column="1"
-                            Name="BrowseSaveButton"
-                            Content="{x:Static lang:Strings.BrowseButton}"
-                            Command="{Binding BrowseSaveFileCommand}"
-                            CommandParameter="{Binding #BrowseSaveButton}" />
-                </Grid>
-
-                <Label Content="{x:Static lang:Strings.LabelFormat}" />
-                <StackPanel Orientation="Horizontal" Spacing="5" Margin="0 0 0 10">
-                    <!-- Below are image file types and should not localize. -->
-                    <RadioButton Content="raw" IsChecked="{Binding IsSaveRawFileChecked}" />
-                    <RadioButton Content="gz" IsChecked="{Binding IsSaveGzipFileChecked}" />
-                    <RadioButton Content="lz4" IsChecked="{Binding IsSaveLz4FileChecked}" />
-                    <RadioButton Content="zst" IsChecked="{Binding IsSaveZstandardFileChecked}" />
-                </StackPanel>
-
-                <ProgressBar Margin="0 0 0 10"
-                             Value="{Binding Progress}"
-                             IsIndeterminate="{Binding IsBackgroundTaskRunning}" />
-
-                <Button Name="SaveButton"
-                        Content="{x:Static lang:Strings.SaveButton}"
-                        IsEnabled="{Binding IsSaveButtonEnabled}"
-                        Command="{Binding SavePartitionCommand}"
-                        CommandParameter="{Binding #SaveButton}" />
+            <!-- Header -->
+            <StackPanel Spacing="6">
+                <TextBlock Classes="SectionLabel" Text="WINPARTFLASH" />
+                <TextBlock Classes="Display" Text="{x:Static lang:Strings.AppName}" />
+                <TextBlock Classes="Subtitle"
+                           Text="{x:Static lang:Strings.AppSubtitle}" />
             </StackPanel>
-        </TabItem>
 
-        <TabItem Header="{x:Static lang:Strings.WritePartition}">
-            <StackPanel>
-                <Label Content="{x:Static lang:Strings.LabelPartition}" />
-                <Grid ColumnDefinitions="*,Auto" Margin="0 0 0 10">
-                    <ComboBox Grid.Column="0"
-                              HorizontalAlignment="Stretch"
-                              Margin="0 0 5 0"
-                              ItemsSource="{Binding PartitionItems}"
-                              SelectedItem="{Binding SelectedPartition}" />
-                    <Button Grid.Column="1"
-                            avalonia:Attached.Icon="fa-solid fa-arrows-rotate"
-                            FontSize="18"
-                            ToolTip.Tip="{x:Static lang:Strings.ReloadPartition}"
-                            VerticalAlignment="Top"
-                            Command="{Binding LoadPartitionsCommand}" />
-                </Grid>
+            <Border Background="{StaticResource LightestGray}" Height="1" />
 
-                <Label Content="{x:Static lang:Strings.LabelFileToFlash}" />
-                <Grid ColumnDefinitions="*,Auto" Margin="0 0 0 10">
-                    <TextBox Grid.Column="0"
-                             Margin="0 0 5 0"
-                             Text="{Binding FlashPartitionFileName}" />
-                    <Button Name="BrowseFlashButton"
-                            Grid.Column="1"
-                            Content="{x:Static lang:Strings.BrowseButton}"
-                            Command="{Binding BrowseFlashFileCommand}"
-                            CommandParameter="{Binding #BrowseFlashButton}" />
-                </Grid>
+            <TabControl>
 
-                <ProgressBar Margin="0 0 0 10"
-                             Value="{Binding Progress}"
-                             IsIndeterminate="{Binding IsBackgroundTaskRunning}" />
+                <TabItem Header="{x:Static lang:Strings.SavePartition}">
+                    <StackPanel Margin="0 20 0 0" Spacing="16">
 
-                <Button Name="WriteButton"
-                        Content="{x:Static lang:Strings.WriteButton}"
-                        IsEnabled="{Binding IsFlashButtonEnabled}"
-                        Command="{Binding FlashPartitionCommand}"
-                        CommandParameter="{Binding #WriteButton}" />
-            </StackPanel>
-        </TabItem>
+                        <StackPanel Spacing="6">
+                            <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionSource}" />
+                            <Label Content="{x:Static lang:Strings.LabelPartition}" />
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <ComboBox Grid.Column="0"
+                                          HorizontalAlignment="Stretch"
+                                          ItemsSource="{Binding PartitionItems}"
+                                          SelectedItem="{Binding SelectedPartition}" />
+                                <Button Grid.Column="1"
+                                        Classes="Icon"
+                                        avalonia:Attached.Icon="fa-solid fa-arrows-rotate"
+                                        FontSize="14"
+                                        ToolTip.Tip="{x:Static lang:Strings.ReloadPartition}"
+                                        Command="{Binding LoadPartitionsCommand}" />
+                            </Grid>
+                        </StackPanel>
 
-        <TabItem Header="Advanced">
-            <TextBlock>WIP. Coming Soon!</TextBlock>
-        </TabItem>
+                        <StackPanel Spacing="6">
+                            <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionDestination}" />
+                            <Label Content="{x:Static lang:Strings.LabelFileToSave}" />
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <TextBox Grid.Column="0"
+                                         Text="{Binding SavePartitionFileName}" />
+                                <Button Grid.Column="1"
+                                        Name="BrowseSaveButton"
+                                        Content="{x:Static lang:Strings.BrowseButton}"
+                                        Command="{Binding BrowseSaveFileCommand}"
+                                        CommandParameter="{Binding #BrowseSaveButton}" />
+                            </Grid>
+                        </StackPanel>
 
+                        <StackPanel Spacing="6">
+                            <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionFormat}" />
+                            <Label Content="{x:Static lang:Strings.LabelFormat}" />
+                            <StackPanel Orientation="Horizontal" Spacing="16">
+                                <RadioButton Content="raw" IsChecked="{Binding IsSaveRawFileChecked}" />
+                                <RadioButton Content="gz" IsChecked="{Binding IsSaveGzipFileChecked}" />
+                                <RadioButton Content="lz4" IsChecked="{Binding IsSaveLz4FileChecked}" />
+                                <RadioButton Content="zst" IsChecked="{Binding IsSaveZstandardFileChecked}" />
+                            </StackPanel>
+                        </StackPanel>
 
-    </TabControl>
+                        <StackPanel Spacing="6">
+                            <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionProgress}" />
+                            <ProgressBar Value="{Binding Progress}"
+                                         IsIndeterminate="{Binding IsBackgroundTaskRunning}" />
+                        </StackPanel>
 
+                        <Button Name="SaveButton"
+                                Classes="Primary"
+                                HorizontalAlignment="Right"
+                                Content="{x:Static lang:Strings.SaveButton}"
+                                IsEnabled="{Binding IsSaveButtonEnabled}"
+                                Command="{Binding SavePartitionCommand}"
+                                CommandParameter="{Binding #SaveButton}" />
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="{x:Static lang:Strings.WritePartition}">
+                    <StackPanel Margin="0 20 0 0" Spacing="16">
+
+                        <StackPanel Spacing="6">
+                            <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionTarget}" />
+                            <Label Content="{x:Static lang:Strings.LabelPartition}" />
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <ComboBox Grid.Column="0"
+                                          HorizontalAlignment="Stretch"
+                                          ItemsSource="{Binding PartitionItems}"
+                                          SelectedItem="{Binding SelectedPartition}" />
+                                <Button Grid.Column="1"
+                                        Classes="Icon"
+                                        avalonia:Attached.Icon="fa-solid fa-arrows-rotate"
+                                        FontSize="14"
+                                        ToolTip.Tip="{x:Static lang:Strings.ReloadPartition}"
+                                        Command="{Binding LoadPartitionsCommand}" />
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Spacing="6">
+                            <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionSource}" />
+                            <Label Content="{x:Static lang:Strings.LabelFileToFlash}" />
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <TextBox Grid.Column="0"
+                                         Text="{Binding FlashPartitionFileName}" />
+                                <Button Name="BrowseFlashButton"
+                                        Grid.Column="1"
+                                        Content="{x:Static lang:Strings.BrowseButton}"
+                                        Command="{Binding BrowseFlashFileCommand}"
+                                        CommandParameter="{Binding #BrowseFlashButton}" />
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Spacing="6">
+                            <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionProgress}" />
+                            <ProgressBar Value="{Binding Progress}"
+                                         IsIndeterminate="{Binding IsBackgroundTaskRunning}" />
+                        </StackPanel>
+
+                        <Button Name="WriteButton"
+                                Classes="Primary"
+                                HorizontalAlignment="Right"
+                                Content="{x:Static lang:Strings.WriteButton}"
+                                IsEnabled="{Binding IsFlashButtonEnabled}"
+                                Command="{Binding FlashPartitionCommand}"
+                                CommandParameter="{Binding #WriteButton}" />
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="{x:Static lang:Strings.TabAdvanced}">
+                    <StackPanel Margin="0 20 0 0" Spacing="8">
+                        <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionStatus}" />
+                        <TextBlock Classes="Subtitle" Text="{x:Static lang:Strings.AdvancedComingSoon}" />
+                    </StackPanel>
+                </TabItem>
+
+            </TabControl>
+
+        </StackPanel>
+    </Border>
 
     <NativeMenu.Menu>
         <NativeMenu>
-            <NativeMenuItem Header="File">
+            <NativeMenuItem Header="{x:Static lang:Strings.MenuFile}">
                 <NativeMenuItem.Menu>
                     <NativeMenu>
-                        <NativeMenuItem Header="Save Partition" Gesture="cmd+S" />
-                        <NativeMenuItem Header="Flash Partition" Gesture="cmd+F" />
-                        <NativeMenuItem Header="Advanced" Gesture="cmd+A" />
+                        <NativeMenuItem Header="{x:Static lang:Strings.MenuSavePartition}" Gesture="cmd+S" />
+                        <NativeMenuItem Header="{x:Static lang:Strings.MenuFlashPartition}" Gesture="cmd+F" />
+                        <NativeMenuItem Header="{x:Static lang:Strings.MenuAdvanced}" Gesture="cmd+A" />
                         <NativeMenuItemSeparator />
-                        <NativeMenuItem Header="Settings" Gesture="cmd+," />
+                        <NativeMenuItem Header="{x:Static lang:Strings.MenuSettings}" Gesture="cmd+," />
                     </NativeMenu>
                 </NativeMenuItem.Menu>
             </NativeMenuItem>

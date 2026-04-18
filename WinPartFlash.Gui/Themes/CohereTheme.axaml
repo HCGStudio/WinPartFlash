@@ -1,0 +1,733 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Styles.Resources>
+        <ResourceDictionary>
+
+            <!-- ============================================================ -->
+            <!-- Window                                                       -->
+            <!-- ============================================================ -->
+            <ControlTheme x:Key="{x:Type Window}" TargetType="Window">
+                <Setter Property="Background" Value="{StaticResource PureWhite}" />
+                <Setter Property="Foreground" Value="{StaticResource NearBlack}" />
+                <Setter Property="FontFamily" Value="{StaticResource BodyFont}" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="TransparencyLevelHint" Value="None" />
+                <Setter Property="UseLayoutRounding" Value="True" />
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <Panel>
+                            <Border Name="PART_TransparencyFallback"
+                                    Background="{TemplateBinding Background}" />
+                            <Border Background="{TemplateBinding Background}" />
+                            <Panel Margin="{TemplateBinding WindowDecorationMargin}"
+                                   Background="Transparent" />
+                            <VisualLayerManager>
+                                <ContentPresenter Name="PART_ContentPresenter"
+                                                  Content="{TemplateBinding Content}"
+                                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                  Padding="{TemplateBinding Padding}"
+                                                  HorizontalAlignment="Stretch"
+                                                  VerticalAlignment="Stretch" />
+                            </VisualLayerManager>
+                        </Panel>
+                    </ControlTemplate>
+                </Setter>
+            </ControlTheme>
+
+            <!-- ============================================================ -->
+            <!-- ContentControl / UserControl                                 -->
+            <!-- ============================================================ -->
+            <ControlTheme x:Key="{x:Type ContentControl}" TargetType="ContentControl">
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <ContentPresenter Name="PART_ContentPresenter"
+                                          Background="{TemplateBinding Background}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                          CornerRadius="{TemplateBinding CornerRadius}"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Padding="{TemplateBinding Padding}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </ControlTemplate>
+                </Setter>
+            </ControlTheme>
+
+            <ControlTheme x:Key="{x:Type UserControl}" TargetType="UserControl"
+                          BasedOn="{StaticResource {x:Type ContentControl}}" />
+
+            <!-- ============================================================ -->
+            <!-- Label                                                        -->
+            <!-- ============================================================ -->
+            <ControlTheme x:Key="{x:Type Label}" TargetType="Label">
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="Foreground" Value="{StaticResource NearBlack}" />
+                <Setter Property="Padding" Value="0 0 0 4" />
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <ContentPresenter Name="PART_ContentPresenter"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Padding="{TemplateBinding Padding}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </ControlTemplate>
+                </Setter>
+            </ControlTheme>
+
+            <!-- ============================================================ -->
+            <!-- Button (ghost/pill default)                                  -->
+            <!-- ============================================================ -->
+            <ControlTheme x:Key="{x:Type Button}" TargetType="Button">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="{StaticResource BorderCool}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="CornerRadius" Value="9999" />
+                <Setter Property="Padding" Value="16 8" />
+                <Setter Property="MinHeight" Value="36" />
+                <Setter Property="Foreground" Value="{StaticResource CohereBlack}" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontWeight" Value="Medium" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <ContentPresenter Name="PART_ContentPresenter"
+                                          Background="{TemplateBinding Background}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                          CornerRadius="{TemplateBinding CornerRadius}"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Padding="{TemplateBinding Padding}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </ControlTemplate>
+                </Setter>
+
+                <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="BorderBrush" Value="{StaticResource InteractionBlue}" />
+                    <Setter Property="TextElement.Foreground" Value="{StaticResource InteractionBlue}" />
+                </Style>
+                <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="{StaticResource LightestGray}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource InteractionBlue}" />
+                    <Setter Property="TextElement.Foreground" Value="{StaticResource InteractionBlue}" />
+                </Style>
+                <Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="{StaticResource BorderLight}" />
+                    <Setter Property="TextElement.Foreground" Value="{StaticResource MutedSlate}" />
+                </Style>
+
+                <!-- Primary (dark solid) variant -->
+                <Style Selector="^.Primary">
+                    <Setter Property="Background" Value="{StaticResource CohereBlack}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource CohereBlack}" />
+                    <Setter Property="Foreground" Value="{StaticResource PureWhite}" />
+                    <Setter Property="Padding" Value="20 10" />
+                    <Setter Property="MinHeight" Value="40" />
+                </Style>
+                <Style Selector="^.Primary /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="TextElement.Foreground" Value="{StaticResource PureWhite}" />
+                </Style>
+                <Style Selector="^.Primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="{StaticResource InteractionBlue}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource InteractionBlue}" />
+                    <Setter Property="TextElement.Foreground" Value="{StaticResource PureWhite}" />
+                </Style>
+                <Style Selector="^.Primary:pressed /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="{StaticResource DeepDark}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource DeepDark}" />
+                    <Setter Property="TextElement.Foreground" Value="{StaticResource PureWhite}" />
+                </Style>
+                <Style Selector="^.Primary:disabled /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="{StaticResource MutedSlate}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource MutedSlate}" />
+                    <Setter Property="TextElement.Foreground" Value="{StaticResource PureWhite}" />
+                </Style>
+
+                <!-- Icon-only variant -->
+                <Style Selector="^.Icon">
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Padding" Value="8" />
+                    <Setter Property="MinWidth" Value="36" />
+                    <Setter Property="MinHeight" Value="36" />
+                </Style>
+                <Style Selector="^.Icon:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="{StaticResource LightestGray}" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="TextElement.Foreground" Value="{StaticResource InteractionBlue}" />
+                </Style>
+            </ControlTheme>
+
+            <!-- ============================================================ -->
+            <!-- RepeatButton (used by ScrollBar)                             -->
+            <!-- ============================================================ -->
+            <ControlTheme x:Key="{x:Type RepeatButton}" TargetType="RepeatButton">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Foreground" Value="{StaticResource MutedSlate}" />
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <ContentPresenter Name="PART_ContentPresenter"
+                                          Background="{TemplateBinding Background}"
+                                          Content="{TemplateBinding Content}"
+                                          Padding="{TemplateBinding Padding}"
+                                          HorizontalContentAlignment="Center"
+                                          VerticalContentAlignment="Center" />
+                    </ControlTemplate>
+                </Setter>
+            </ControlTheme>
+
+            <!-- ============================================================ -->
+            <!-- ToggleButton                                                 -->
+            <!-- ============================================================ -->
+            <ControlTheme x:Key="{x:Type ToggleButton}" TargetType="ToggleButton">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="{StaticResource BorderCool}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="Padding" Value="12 6" />
+                <Setter Property="Foreground" Value="{StaticResource CohereBlack}" />
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <ContentPresenter Name="PART_ContentPresenter"
+                                          Background="{TemplateBinding Background}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                          CornerRadius="{TemplateBinding CornerRadius}"
+                                          Content="{TemplateBinding Content}"
+                                          Padding="{TemplateBinding Padding}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </ControlTemplate>
+                </Setter>
+                <Style Selector="^:checked /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="{StaticResource CohereBlack}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource CohereBlack}" />
+                    <Setter Property="TextElement.Foreground" Value="{StaticResource PureWhite}" />
+                </Style>
+            </ControlTheme>
+
+            <!-- ============================================================ -->
+            <!-- TextBox                                                      -->
+            <!-- ============================================================ -->
+            <ControlTheme x:Key="{x:Type TextBox}" TargetType="TextBox">
+                <Setter Property="Background" Value="{StaticResource PureWhite}" />
+                <Setter Property="BorderBrush" Value="{StaticResource BorderCool}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="Padding" Value="12 8" />
+                <Setter Property="MinHeight" Value="36" />
+                <Setter Property="Foreground" Value="{StaticResource CohereBlack}" />
+                <Setter Property="CaretBrush" Value="{StaticResource CohereBlack}" />
+                <Setter Property="SelectionBrush" Value="{StaticResource InteractionBlue}" />
+                <Setter Property="SelectionForegroundBrush" Value="{StaticResource PureWhite}" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <Border Name="PART_BorderElement"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding CornerRadius}"
+                                MinHeight="{TemplateBinding MinHeight}">
+                            <DockPanel>
+                                <ContentPresenter Content="{TemplateBinding InnerLeftContent}"
+                                                  DockPanel.Dock="Left" />
+                                <ContentPresenter Content="{TemplateBinding InnerRightContent}"
+                                                  DockPanel.Dock="Right" />
+                                <ScrollViewer Name="PART_ScrollViewer"
+                                              HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
+                                              VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"
+                                              IsScrollChainingEnabled="{TemplateBinding (ScrollViewer.IsScrollChainingEnabled)}"
+                                              Padding="{TemplateBinding Padding}">
+                                    <Panel>
+                                        <TextBlock Name="PART_Watermark"
+                                                   Text="{TemplateBinding Watermark}"
+                                                   Foreground="{StaticResource MutedSlate}"
+                                                   IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.IsNullOrEmpty}}"
+                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                        <TextPresenter Name="PART_TextPresenter"
+                                                       Text="{TemplateBinding Text, Mode=TwoWay}"
+                                                       CaretIndex="{TemplateBinding CaretIndex}"
+                                                       SelectionStart="{TemplateBinding SelectionStart}"
+                                                       SelectionEnd="{TemplateBinding SelectionEnd}"
+                                                       TextAlignment="{TemplateBinding TextAlignment}"
+                                                       TextWrapping="{TemplateBinding TextWrapping}"
+                                                       PasswordChar="{TemplateBinding PasswordChar}"
+                                                       RevealPassword="{TemplateBinding RevealPassword}"
+                                                       SelectionBrush="{TemplateBinding SelectionBrush}"
+                                                       SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"
+                                                       CaretBrush="{TemplateBinding CaretBrush}"
+                                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                    </Panel>
+                                </ScrollViewer>
+                            </DockPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter>
+
+                <Style Selector="^:pointerover /template/ Border#PART_BorderElement">
+                    <Setter Property="BorderBrush" Value="{StaticResource NearBlack}" />
+                </Style>
+                <Style Selector="^:focus /template/ Border#PART_BorderElement">
+                    <Setter Property="BorderBrush" Value="{StaticResource FocusPurple}" />
+                </Style>
+                <Style Selector="^:disabled /template/ Border#PART_BorderElement">
+                    <Setter Property="Background" Value="{StaticResource Snow}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource BorderLight}" />
+                </Style>
+            </ControlTheme>
+
+            <!-- ============================================================ -->
+            <!-- ComboBox                                                     -->
+            <!-- ============================================================ -->
+            <ControlTheme x:Key="{x:Type ComboBox}" TargetType="ComboBox">
+                <Setter Property="Background" Value="{StaticResource PureWhite}" />
+                <Setter Property="BorderBrush" Value="{StaticResource BorderCool}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="Padding" Value="12 6" />
+                <Setter Property="MinHeight" Value="36" />
+                <Setter Property="Foreground" Value="{StaticResource CohereBlack}" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="PlaceholderForeground" Value="{StaticResource MutedSlate}" />
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Border Name="Background"
+                                    Grid.ColumnSpan="2"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="{TemplateBinding CornerRadius}"
+                                    MinHeight="{TemplateBinding MinHeight}" />
+
+                            <TextBlock Name="PlaceholderTextBlock"
+                                       Grid.Column="0"
+                                       Margin="{TemplateBinding Padding}"
+                                       Text="{TemplateBinding PlaceholderText}"
+                                       Foreground="{TemplateBinding PlaceholderForeground}"
+                                       VerticalAlignment="Center"
+                                       IsVisible="{TemplateBinding SelectionBoxItem, Converter={x:Static ObjectConverters.IsNull}}" />
+
+                            <ContentControl Name="ContentPresenter"
+                                            Grid.Column="0"
+                                            Margin="{TemplateBinding Padding}"
+                                            Content="{TemplateBinding SelectionBoxItem}"
+                                            ContentTemplate="{TemplateBinding ItemTemplate}"
+                                            HorizontalContentAlignment="Stretch"
+                                            VerticalContentAlignment="Center" />
+
+                            <Path Grid.Column="1"
+                                  Width="10" Height="6"
+                                  Margin="0 0 12 0"
+                                  Stretch="Uniform"
+                                  Fill="{StaticResource MutedSlate}"
+                                  Data="M 0 0 L 5 5 L 10 0 Z"
+                                  HorizontalAlignment="Right"
+                                  VerticalAlignment="Center" />
+
+                            <Popup Name="PART_Popup"
+                                   WindowManagerAddShadowHint="False"
+                                   IsOpen="{TemplateBinding IsDropDownOpen, Mode=TwoWay}"
+                                   MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                                   MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                   PlacementTarget="Background"
+                                   Placement="Bottom">
+                                <Border Background="{StaticResource PureWhite}"
+                                        BorderBrush="{StaticResource BorderCool}"
+                                        BorderThickness="1"
+                                        CornerRadius="8"
+                                        Padding="4"
+                                        HorizontalAlignment="Stretch">
+                                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                                  VerticalScrollBarVisibility="Auto">
+                                        <ItemsPresenter Name="PART_ItemsPresenter"
+                                                        ItemsPanel="{TemplateBinding ItemsPanel}" />
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter>
+
+                <Style Selector="^:pointerover /template/ Border#Background">
+                    <Setter Property="BorderBrush" Value="{StaticResource NearBlack}" />
+                </Style>
+                <Style Selector="^:focus /template/ Border#Background">
+                    <Setter Property="BorderBrush" Value="{StaticResource FocusPurple}" />
+                </Style>
+                <Style Selector="^:pressed /template/ Border#Background">
+                    <Setter Property="BorderBrush" Value="{StaticResource FocusPurple}" />
+                </Style>
+                <Style Selector="^:disabled /template/ Border#Background">
+                    <Setter Property="Background" Value="{StaticResource Snow}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource BorderLight}" />
+                </Style>
+            </ControlTheme>
+
+            <ControlTheme x:Key="{x:Type ComboBoxItem}" TargetType="ComboBoxItem">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Foreground" Value="{StaticResource NearBlack}" />
+                <Setter Property="Padding" Value="12 8" />
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <ContentPresenter Name="PART_ContentPresenter"
+                                          Background="{TemplateBinding Background}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                          CornerRadius="6"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Padding="{TemplateBinding Padding}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </ControlTemplate>
+                </Setter>
+                <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="{StaticResource Snow}" />
+                </Style>
+                <Style Selector="^:selected /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="{StaticResource LightestGray}" />
+                    <Setter Property="TextElement.Foreground" Value="{StaticResource CohereBlack}" />
+                </Style>
+                <Style Selector="^:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="{StaticResource LightestGray}" />
+                </Style>
+            </ControlTheme>
+
+            <!-- ============================================================ -->
+            <!-- RadioButton                                                  -->
+            <!-- ============================================================ -->
+            <ControlTheme x:Key="{x:Type RadioButton}" TargetType="RadioButton">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Foreground" Value="{StaticResource NearBlack}" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Padding" Value="8 0 0 0" />
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <Grid ColumnDefinitions="Auto,*">
+                            <Grid Width="18" Height="18" VerticalAlignment="Center">
+                                <Ellipse Name="OuterEllipse"
+                                         Width="18" Height="18"
+                                         Stroke="{StaticResource BorderCool}"
+                                         StrokeThickness="1.5"
+                                         Fill="{StaticResource PureWhite}" />
+                                <Ellipse Name="CheckGlyph"
+                                         Width="8" Height="8"
+                                         Fill="{StaticResource PureWhite}"
+                                         IsVisible="False" />
+                            </Grid>
+                            <ContentPresenter Grid.Column="1"
+                                              Name="PART_ContentPresenter"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Padding="{TemplateBinding Padding}"
+                                              VerticalContentAlignment="Center"
+                                              TextElement.Foreground="{TemplateBinding Foreground}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter>
+                <Style Selector="^:pointerover /template/ Ellipse#OuterEllipse">
+                    <Setter Property="Stroke" Value="{StaticResource NearBlack}" />
+                </Style>
+                <Style Selector="^:checked /template/ Ellipse#OuterEllipse">
+                    <Setter Property="Stroke" Value="{StaticResource CohereBlack}" />
+                    <Setter Property="Fill" Value="{StaticResource CohereBlack}" />
+                </Style>
+                <Style Selector="^:checked /template/ Ellipse#CheckGlyph">
+                    <Setter Property="IsVisible" Value="True" />
+                </Style>
+                <Style Selector="^:disabled">
+                    <Setter Property="Foreground" Value="{StaticResource MutedSlate}" />
+                </Style>
+                <Style Selector="^:disabled /template/ Ellipse#OuterEllipse">
+                    <Setter Property="Stroke" Value="{StaticResource BorderLight}" />
+                </Style>
+            </ControlTheme>
+
+            <!-- ============================================================ -->
+            <!-- ProgressBar                                                  -->
+            <!-- ============================================================ -->
+            <ControlTheme x:Key="{x:Type ProgressBar}" TargetType="ProgressBar">
+                <Setter Property="Foreground" Value="{StaticResource CohereBlack}" />
+                <Setter Property="Background" Value="{StaticResource LightestGray}" />
+                <Setter Property="MinHeight" Value="6" />
+                <Setter Property="CornerRadius" Value="9999" />
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <Border Name="PART_Track"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="{TemplateBinding CornerRadius}"
+                                MinHeight="{TemplateBinding MinHeight}">
+                            <Border Name="PART_Indicator"
+                                    Background="{TemplateBinding Foreground}"
+                                    CornerRadius="{TemplateBinding CornerRadius}"
+                                    HorizontalAlignment="Left" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter>
+            </ControlTheme>
+
+            <!-- ============================================================ -->
+            <!-- TabControl & TabItem                                         -->
+            <!-- ============================================================ -->
+            <ControlTheme x:Key="{x:Type TabControl}" TargetType="TabControl">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding CornerRadius}"
+                                Padding="{TemplateBinding Padding}">
+                            <DockPanel>
+                                <Border DockPanel.Dock="Top"
+                                        BorderBrush="{StaticResource LightestGray}"
+                                        BorderThickness="0 0 0 1">
+                                    <ItemsPresenter Name="PART_ItemsPresenter"
+                                                    ItemsPanel="{TemplateBinding ItemsPanel}" />
+                                </Border>
+                                <ContentPresenter Name="PART_SelectedContentHost"
+                                                  Content="{TemplateBinding SelectedContent}"
+                                                  ContentTemplate="{TemplateBinding SelectedContentTemplate}"
+                                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            </DockPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter>
+            </ControlTheme>
+
+            <ControlTheme x:Key="{x:Type TabItem}" TargetType="TabItem">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontWeight" Value="Medium" />
+                <Setter Property="Foreground" Value="{StaticResource MutedSlate}" />
+                <Setter Property="Padding" Value="0 8" />
+                <Setter Property="Margin" Value="0 0 24 0" />
+                <Setter Property="MinHeight" Value="36" />
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <Grid Name="PART_LayoutRoot" Background="Transparent">
+                            <DockPanel>
+                                <Border Name="PART_SelectedPipe"
+                                        DockPanel.Dock="Bottom"
+                                        Height="2"
+                                        Background="Transparent"
+                                        CornerRadius="9999" />
+                                <ContentPresenter Name="PART_ContentPresenter"
+                                                  Content="{TemplateBinding Header}"
+                                                  ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                                  Padding="{TemplateBinding Padding}"
+                                                  TextElement.Foreground="{TemplateBinding Foreground}"
+                                                  TextElement.FontSize="{TemplateBinding FontSize}"
+                                                  TextElement.FontWeight="{TemplateBinding FontWeight}" />
+                            </DockPanel>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter>
+                <Style Selector="^:pointerover">
+                    <Setter Property="Foreground" Value="{StaticResource CohereBlack}" />
+                </Style>
+                <Style Selector="^:selected">
+                    <Setter Property="Foreground" Value="{StaticResource CohereBlack}" />
+                </Style>
+                <Style Selector="^:selected /template/ Border#PART_SelectedPipe">
+                    <Setter Property="Background" Value="{StaticResource CohereBlack}" />
+                </Style>
+            </ControlTheme>
+
+            <!-- ============================================================ -->
+            <!-- ScrollViewer & ScrollBar                                     -->
+            <!-- ============================================================ -->
+            <ControlTheme x:Key="{x:Type ScrollViewer}" TargetType="ScrollViewer">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="*,Auto">
+                            <ScrollContentPresenter Name="PART_ContentPresenter"
+                                                    Grid.Row="0" Grid.Column="0"
+                                                    Background="{TemplateBinding Background}"
+                                                    Margin="{TemplateBinding Padding}" />
+                            <ScrollBar Name="PART_HorizontalScrollBar"
+                                       Grid.Row="1" Grid.Column="0"
+                                       Orientation="Horizontal" />
+                            <ScrollBar Name="PART_VerticalScrollBar"
+                                       Grid.Row="0" Grid.Column="1"
+                                       Orientation="Vertical" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter>
+            </ControlTheme>
+
+            <ControlTheme x:Key="{x:Type Thumb}" TargetType="Thumb">
+                <Setter Property="Background" Value="{StaticResource MutedSlate}" />
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="9999" />
+                    </ControlTemplate>
+                </Setter>
+                <Style Selector="^:pointerover">
+                    <Setter Property="Background" Value="{StaticResource NearBlack}" />
+                </Style>
+            </ControlTheme>
+
+            <ControlTheme x:Key="{x:Type ScrollBar}" TargetType="ScrollBar">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="MinWidth" Value="8" />
+                <Setter Property="MinHeight" Value="8" />
+
+                <Style Selector="^:vertical">
+                    <Setter Property="Width" Value="8" />
+                    <Setter Property="Template">
+                        <ControlTemplate>
+                            <Grid Background="{TemplateBinding Background}">
+                                <Track Minimum="{TemplateBinding Minimum}"
+                                       Maximum="{TemplateBinding Maximum}"
+                                       Value="{TemplateBinding Value, Mode=TwoWay}"
+                                       ViewportSize="{TemplateBinding ViewportSize}"
+                                       IsDirectionReversed="True"
+                                       Orientation="Vertical">
+                                    <Thumb Name="PART_Thumb" MinHeight="20" />
+                                </Track>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter>
+                </Style>
+
+                <Style Selector="^:horizontal">
+                    <Setter Property="Height" Value="8" />
+                    <Setter Property="Template">
+                        <ControlTemplate>
+                            <Grid Background="{TemplateBinding Background}">
+                                <Track Minimum="{TemplateBinding Minimum}"
+                                       Maximum="{TemplateBinding Maximum}"
+                                       Value="{TemplateBinding Value, Mode=TwoWay}"
+                                       ViewportSize="{TemplateBinding ViewportSize}"
+                                       Orientation="Horizontal">
+                                    <Thumb Name="PART_Thumb" MinWidth="20" />
+                                </Track>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter>
+                </Style>
+            </ControlTheme>
+
+            <!-- ============================================================ -->
+            <!-- ToolTip                                                      -->
+            <!-- ============================================================ -->
+            <ControlTheme x:Key="{x:Type ToolTip}" TargetType="ToolTip">
+                <Setter Property="Background" Value="{StaticResource CohereBlack}" />
+                <Setter Property="Foreground" Value="{StaticResource PureWhite}" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="Padding" Value="10 6" />
+                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding CornerRadius}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter Name="PART_ContentPresenter"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              TextElement.Foreground="{TemplateBinding Foreground}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter>
+            </ControlTheme>
+
+            <!-- ============================================================ -->
+            <!-- ItemsControl                                                 -->
+            <!-- ============================================================ -->
+            <ControlTheme x:Key="{x:Type ItemsControl}" TargetType="ItemsControl">
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding CornerRadius}"
+                                Padding="{TemplateBinding Padding}">
+                            <ItemsPresenter Name="PART_ItemsPresenter"
+                                            ItemsPanel="{TemplateBinding ItemsPanel}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter>
+            </ControlTheme>
+
+        </ResourceDictionary>
+    </Styles.Resources>
+
+    <!-- ============================================================ -->
+    <!-- Class-based decorative styles                                -->
+    <!-- ============================================================ -->
+
+    <!-- 22px Cohere card -->
+    <Style Selector="Border.Card">
+        <Setter Property="Background" Value="{StaticResource PureWhite}" />
+        <Setter Property="BorderBrush" Value="{StaticResource BorderCool}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="22" />
+        <Setter Property="Padding" Value="28" />
+    </Style>
+
+    <!-- Snow elevated surface -->
+    <Style Selector="Border.Surface">
+        <Setter Property="Background" Value="{StaticResource Snow}" />
+        <Setter Property="BorderBrush" Value="{StaticResource LightestGray}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="Padding" Value="20" />
+    </Style>
+
+    <!-- Section uppercase code label -->
+    <Style Selector="TextBlock.SectionLabel">
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="LetterSpacing" Value="2" />
+        <Setter Property="Foreground" Value="{StaticResource MutedSlate}" />
+    </Style>
+
+    <!-- Display heading -->
+    <Style Selector="TextBlock.Display">
+        <Setter Property="FontFamily" Value="{StaticResource DisplayFont}" />
+        <Setter Property="FontSize" Value="32" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="Foreground" Value="{StaticResource CohereBlack}" />
+        <Setter Property="LineHeight" Value="36" />
+        <Setter Property="LetterSpacing" Value="-0.6" />
+    </Style>
+
+    <!-- Subtitle / caption -->
+    <Style Selector="TextBlock.Subtitle">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Foreground" Value="{StaticResource MutedSlate}" />
+        <Setter Property="LineHeight" Value="20" />
+    </Style>
+
+</Styles>

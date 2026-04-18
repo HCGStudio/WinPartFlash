@@ -80,4 +80,68 @@
         <value>Are you sure to flash to a {0} partition {1}?</value>
         <comment>A confirmation text to show before flash action. {0} is the size of the partition, and {1} is the partition name.</comment>
     </data>
+    <data name="AppSubtitle" xml:space="preserve">
+        <value>Image and flash block-level partitions.</value>
+        <comment>Subtitle shown under the app title in the main window.</comment>
+    </data>
+    <data name="SectionSource" xml:space="preserve">
+        <value>SOURCE</value>
+        <comment>Section label above the source partition selector on the Save tab.</comment>
+    </data>
+    <data name="SectionDestination" xml:space="preserve">
+        <value>DESTINATION</value>
+        <comment>Section label above the destination file picker on the Save tab.</comment>
+    </data>
+    <data name="SectionFormat" xml:space="preserve">
+        <value>FORMAT</value>
+        <comment>Section label above the compression-format radio buttons.</comment>
+    </data>
+    <data name="SectionProgress" xml:space="preserve">
+        <value>PROGRESS</value>
+        <comment>Section label above the progress bar.</comment>
+    </data>
+    <data name="SectionTarget" xml:space="preserve">
+        <value>TARGET</value>
+        <comment>Section label above the target partition selector on the Flash tab.</comment>
+    </data>
+    <data name="SectionStatus" xml:space="preserve">
+        <value>STATUS</value>
+        <comment>Section label on the Advanced tab.</comment>
+    </data>
+    <data name="TabAdvanced" xml:space="preserve">
+        <value>Advanced</value>
+        <comment>Tab header for the Advanced tab.</comment>
+    </data>
+    <data name="AdvancedComingSoon" xml:space="preserve">
+        <value>WIP. Coming Soon!</value>
+        <comment>Placeholder text on the Advanced tab.</comment>
+    </data>
+    <data name="MenuFile" xml:space="preserve">
+        <value>File</value>
+        <comment>Top-level native menu item.</comment>
+    </data>
+    <data name="MenuSavePartition" xml:space="preserve">
+        <value>Save Partition</value>
+        <comment>Native menu entry that opens the Save Partition tab.</comment>
+    </data>
+    <data name="MenuFlashPartition" xml:space="preserve">
+        <value>Flash Partition</value>
+        <comment>Native menu entry that opens the Flash Partition tab.</comment>
+    </data>
+    <data name="MenuAdvanced" xml:space="preserve">
+        <value>Advanced</value>
+        <comment>Native menu entry that opens the Advanced tab.</comment>
+    </data>
+    <data name="MenuSettings" xml:space="preserve">
+        <value>Settings</value>
+        <comment>Native menu entry that opens settings.</comment>
+    </data>
+    <data name="SaveFileDialogTitle" xml:space="preserve">
+        <value>Save File</value>
+        <comment>Title of the OS save-file picker.</comment>
+    </data>
+    <data name="ConfirmDialogTitle" xml:space="preserve">
+        <value>Confirm</value>
+        <comment>Title of the confirmation dialog shown before flashing.</comment>
+    </data>
 </root>

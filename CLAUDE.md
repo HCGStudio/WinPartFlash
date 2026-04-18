@@ -25,6 +25,6 @@ Key subsystems, each behind an interface and selected/registered via its extensi
 - `FileOpenHelper/` — abstraction over native open dialogs.
 - `ViewModels/` use ReactiveUI; views are wired via `ViewLocator.cs` and Avalonia compiled bindings (`AvaloniaUseCompiledBindingsByDefault=true`).
 
-Localization: user-facing strings live in `Resources/Strings.resx` (designer-generated `Strings.Designer.cs`). `App` sets `Strings.Culture = CultureInfo.CurrentUICulture` at startup — add new strings via the resx, don't hardcode.
+Localization: user-facing strings live in `Resources/Strings.resx` with per-culture overlays at `Resources/Strings.{culture}.resx` (e.g. `Strings.zh-hans.resx`). The strongly-typed accessor is `Strings.Designer.cs` — when adding a key, update the designer alongside the resx (the file is checked in, not regenerated automatically by `dotnet build`). `App` sets `Strings.Culture = CultureInfo.CurrentUICulture` at startup. Bind from XAML with `{x:Static lang:Strings.X}` (the `lang:` prefix is `xmlns:lang="clr-namespace:WinPartFlash.Gui.Resources"`); reference from C# as `Strings.X`. Don't hardcode user-facing text — that includes section labels, native menu items, and dialog titles passed to `MessageBoxManager`/`StorageProvider`.
 
 Unsafe code is enabled (`AllowUnsafeBlocks`) for the partition/GPT parsing paths.

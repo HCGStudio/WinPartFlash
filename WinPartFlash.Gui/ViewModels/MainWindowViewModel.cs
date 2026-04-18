@@ -285,7 +285,7 @@ public class MainWindowViewModel : ViewModelBase
         var file = await topLevel.StorageProvider.SaveFilePickerAsync(
             new FilePickerSaveOptions
             {
-                Title = "Save File",
+                Title = Strings.SaveFileDialogTitle,
                 DefaultExtension = ".img",
                 FileTypeChoices = [DiskImage],
                 ShowOverwritePrompt = true
@@ -359,7 +359,7 @@ public class MainWindowViewModel : ViewModelBase
         {
             var selectedPartition = SelectedPartition!.Value;
             var box = MessageBoxManager.GetMessageBoxStandard(
-                "Confirm",
+                Strings.ConfirmDialogTitle,
                 string.Format(
                     Strings.ConfirmFlashText,
                     NumberHelper.BytesToHumanReadable(selectedPartition.Length),

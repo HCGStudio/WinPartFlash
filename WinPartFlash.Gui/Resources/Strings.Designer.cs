@@ -128,5 +128,101 @@ namespace WinPartFlash.Gui.Resources {
                 return ResourceManager.GetString("ConfirmFlashText", resourceCulture);
             }
         }
+
+        public static string AppSubtitle {
+            get {
+                return ResourceManager.GetString("AppSubtitle", resourceCulture);
+            }
+        }
+
+        public static string SectionSource {
+            get {
+                return ResourceManager.GetString("SectionSource", resourceCulture);
+            }
+        }
+
+        public static string SectionDestination {
+            get {
+                return ResourceManager.GetString("SectionDestination", resourceCulture);
+            }
+        }
+
+        public static string SectionFormat {
+            get {
+                return ResourceManager.GetString("SectionFormat", resourceCulture);
+            }
+        }
+
+        public static string SectionProgress {
+            get {
+                return ResourceManager.GetString("SectionProgress", resourceCulture);
+            }
+        }
+
+        public static string SectionTarget {
+            get {
+                return ResourceManager.GetString("SectionTarget", resourceCulture);
+            }
+        }
+
+        public static string SectionStatus {
+            get {
+                return ResourceManager.GetString("SectionStatus", resourceCulture);
+            }
+        }
+
+        public static string TabAdvanced {
+            get {
+                return ResourceManager.GetString("TabAdvanced", resourceCulture);
+            }
+        }
+
+        public static string AdvancedComingSoon {
+            get {
+                return ResourceManager.GetString("AdvancedComingSoon", resourceCulture);
+            }
+        }
+
+        public static string MenuFile {
+            get {
+                return ResourceManager.GetString("MenuFile", resourceCulture);
+            }
+        }
+
+        public static string MenuSavePartition {
+            get {
+                return ResourceManager.GetString("MenuSavePartition", resourceCulture);
+            }
+        }
+
+        public static string MenuFlashPartition {
+            get {
+                return ResourceManager.GetString("MenuFlashPartition", resourceCulture);
+            }
+        }
+
+        public static string MenuAdvanced {
+            get {
+                return ResourceManager.GetString("MenuAdvanced", resourceCulture);
+            }
+        }
+
+        public static string MenuSettings {
+            get {
+                return ResourceManager.GetString("MenuSettings", resourceCulture);
+            }
+        }
+
+        public static string SaveFileDialogTitle {
+            get {
+                return ResourceManager.GetString("SaveFileDialogTitle", resourceCulture);
+            }
+        }
+
+        public static string ConfirmDialogTitle {
+            get {
+                return ResourceManager.GetString("ConfirmDialogTitle", resourceCulture);
+            }
+        }
     }
 }

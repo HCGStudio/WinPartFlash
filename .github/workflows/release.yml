@@ -108,12 +108,23 @@ jobs:
           echo "version=$v" >> "$GITHUB_OUTPUT"
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
-      - name: Create GitHub release
+      - name: Create or update GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.ver.outputs.tag }}
+          TITLE: WinPartFlash ${{ steps.ver.outputs.version }}
+          REPO: ${{ github.repository }}
         run: |
-          gh release create "${{ steps.ver.outputs.tag }}" \
-            --repo "${{ github.repository }}" \
-            --title "WinPartFlash ${{ steps.ver.outputs.version }}" \
-            --generate-notes \
-            release/*
+          # Re-runs (or a release created manually before the workflow fired)
+          # would otherwise fail at `release create`; fall back to uploading to
+          # the existing release in that case, clobbering any prior assets with
+          # the same name so the attached files always match this run.
+          if gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1; then
+            gh release upload "$TAG" --repo "$REPO" --clobber release/*
+          else
+            gh release create "$TAG" \
+              --repo "$REPO" \
+              --title "$TITLE" \
+              --generate-notes \
+              release/*
+          fi

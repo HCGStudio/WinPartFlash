@@ -47,23 +47,6 @@ public class MainWindowViewModel : ViewModelBase
     private readonly ObservableAsPropertyHelper<bool> _isSaveButtonEnabled;
     private readonly ObservableAsPropertyHelper<bool> _isFlashButtonEnabled;
 
-    private CompressionType _compressionType;
-
-    private bool _isSaveGzipFileChecked;
-    private bool _isSaveRawFileChecked = true;
-    private bool _isSaveZstandardFileChecked;
-    private bool _isSaveLz4FileChecked;
-    private bool _isBackgroundTaskRunning;
-
-    private int _progress;
-
-    private List<PartitionItemViewModel> _partitionItems = new();
-
-    private string _savePartitionFileName = string.Empty;
-    private string _flashPartitionFileName = string.Empty;
-
-    private PartitionItemViewModel? _selectedPartition;
-
     public MainWindowViewModel(
         IPartitionDetector partitionDetector,
         ICompressionStreamCopierFactory streamCopierFactory,
@@ -180,28 +163,28 @@ public class MainWindowViewModel : ViewModelBase
 
     public bool IsSaveZstandardFileChecked
     {
-        get => _isSaveZstandardFileChecked;
-        set => this.RaiseAndSetIfChanged(ref _isSaveZstandardFileChecked, value);
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
     public bool IsSaveLz4FileChecked
     {
-        get => _isSaveLz4FileChecked;
-        set => this.RaiseAndSetIfChanged(ref _isSaveLz4FileChecked, value);
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
     public bool IsFlashButtonEnabled => _isFlashButtonEnabled.Value;
 
     public int Progress
     {
-        get => _progress;
-        set => this.RaiseAndSetIfChanged(ref _progress, value);
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
     public bool IsBackgroundTaskRunning
     {
-        get => _isBackgroundTaskRunning;
-        set => this.RaiseAndSetIfChanged(ref _isBackgroundTaskRunning, value);
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
     public bool IsMainWindowEnabled => _isMainWindowEnabled.Value;
@@ -209,39 +192,39 @@ public class MainWindowViewModel : ViewModelBase
 
     public bool IsSaveRawFileChecked
     {
-        get => _isSaveRawFileChecked;
-        set => this.RaiseAndSetIfChanged(ref _isSaveRawFileChecked, value);
-    }
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = true;
 
     public bool IsSaveGzipFileChecked
     {
-        get => _isSaveGzipFileChecked;
-        set => this.RaiseAndSetIfChanged(ref _isSaveGzipFileChecked, value);
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
     public string SavePartitionFileName
     {
-        get => _savePartitionFileName;
-        set => this.RaiseAndSetIfChanged(ref _savePartitionFileName, value);
-    }
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = string.Empty;
 
     public string FlashPartitionFileName
     {
-        get => _flashPartitionFileName;
-        set => this.RaiseAndSetIfChanged(ref _flashPartitionFileName, value);
-    }
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = string.Empty;
 
     public PartitionItemViewModel? SelectedPartition
     {
-        get => _selectedPartition;
-        set => this.RaiseAndSetIfChanged(ref _selectedPartition, value);
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
     public List<PartitionItemViewModel> PartitionItems
     {
-        get => _partitionItems;
-        set => this.RaiseAndSetIfChanged(ref _partitionItems, value);
-    }
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = new();
 
     public ReactiveCommand<Unit, Unit> LoadPartitionsCommand { get; }
     public ReactiveCommand<Button, Unit> BrowseSaveFileCommand { get; }
@@ -251,8 +234,8 @@ public class MainWindowViewModel : ViewModelBase
 
     private CompressionType CompressionType
     {
-        get => _compressionType;
-        set => this.RaiseAndSetIfChanged(ref _compressionType, value);
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
     }
 
     private static Window? GetVisualTopWindow(Visual? visual)

@@ -136,7 +136,7 @@ public class MainWindowViewModel : ViewModelBase
                         throw new ArgumentOutOfRangeException();
                 }
             });
-
+        
         // Subscribe to update button status after file name updated
         this
             .WhenAnyValue(vm => vm.SavePartitionFileName)

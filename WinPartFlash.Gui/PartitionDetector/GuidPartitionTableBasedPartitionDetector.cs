@@ -27,44 +27,52 @@ public abstract class GuidPartitionTableBasedPartitionDetector : IPartitionDetec
 
         foreach (var diskInfo in disks)
         {
-            using var diskFile = File.Open(
-                diskInfo.Name,
-                FileMode.Open,
-                FileAccess.ReadWrite,
-                FileShare.ReadWrite);
-
-            var bufferSpan = new Span<byte>(buffer, (int)diskInfo.SectorSize);
-            diskFile.Seek((long)diskInfo.SectorSize, SeekOrigin.Begin);
-
-            if (diskFile.Read(bufferSpan) != (int)diskInfo.SectorSize)
-                continue;
-
-            var entries = VerifyDiskAndProcessHeader(
-                (GuidPartitionTableHeader*)buffer,
-                diskFile,
-                diskInfo);
-
-            if (entries == null) continue;
-            // TODO: Log this entries null
-
-            var span = entries.AsSpan();
-            for (var index = 0; index < span.Length; index++)
+            try
             {
-                ref var entry = ref span[index];
-                if (entry.PartitionGuid == Guid.Empty)
+                using var diskFile = File.Open(
+                    diskInfo.Name,
+                    FileMode.Open,
+                    FileAccess.ReadWrite,
+                    FileShare.ReadWrite);
+
+                var bufferSpan = new Span<byte>(buffer, (int)diskInfo.SectorSize);
+                diskFile.Seek((long)diskInfo.SectorSize, SeekOrigin.Begin);
+
+                if (diskFile.Read(bufferSpan) != (int)diskInfo.SectorSize)
                     continue;
 
-                fixed (char* s = entry.PartitionName)
+                var entries = VerifyDiskAndProcessHeader(
+                    (GuidPartitionTableHeader*)buffer,
+                    diskFile,
+                    diskInfo);
+
+                if (entries == null) continue;
+                // TODO: Log this entries null
+
+                var span = entries.AsSpan();
+                for (var index = 0; index < span.Length; index++)
                 {
-                    var partitionName = new Span<char>(s, CountStringLength(s, 36));
-                    var partitionLength = diskInfo.SectorSize * (entry.EndLba - entry.StartLba + 1);
-                    var partitionOffset = diskInfo.SectorSize * entry.StartLba;
-                    result.Add(new PartitionResult(
-                        $"Disk {diskInfo.Name} Partition {index + 1} ({partitionName})",
-                        partitionLength,
-                        new Lazy<Stream>(OpenAndSeekLength(diskInfo.Name, partitionOffset, partitionLength))));
+                    ref var entry = ref span[index];
+                    if (entry.PartitionGuid == Guid.Empty)
+                        continue;
+
+                    fixed (char* s = entry.PartitionName)
+                    {
+                        var partitionName = new Span<char>(s, CountStringLength(s, 36));
+                        var partitionLength = diskInfo.SectorSize * (entry.EndLba - entry.StartLba + 1);
+                        var partitionOffset = diskInfo.SectorSize * entry.StartLba;
+                        result.Add(new PartitionResult(
+                            $"Disk {diskInfo.Name} Partition {index + 1} ({partitionName})",
+                            partitionLength,
+                            new Lazy<Stream>(OpenAndSeekLength(diskInfo.Name, partitionOffset, partitionLength))));
+                    }
                 }
             }
+            catch (Exception)
+            {
+                // TODO: Add log here
+            }
+
         }
 
         return result;

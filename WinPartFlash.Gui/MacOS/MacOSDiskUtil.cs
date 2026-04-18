@@ -27,13 +27,41 @@ public static partial class MacOSDiskUtil
         ulong Offset,
         ulong Length,
         ulong SectorSize,
-        string DisplayName);
+        string DisplayName,
+        string WholeDiskId,
+        bool IsWholeDisk,
+        bool IsSystemDisk);
+
+    public static async Task<string?> GetSystemWholeDiskIdAsync(CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var plist = await RunDiskutilAsync(["info", "-plist", "/"], cancellationToken);
+            var dict = ParsePlistRootDict(plist);
+            var parent = ReadString(dict, "ParentWholeDisk");
+            if (!string.IsNullOrEmpty(parent)) return parent;
+            return ReadString(dict, "DeviceIdentifier");
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public static async Task EjectDiskAsync(string wholeDiskId, CancellationToken cancellationToken = default)
+    {
+        await RunDiskutilAsync(["eject", wholeDiskId.StartsWith("/dev/") ? wholeDiskId : "/dev/" + wholeDiskId],
+            cancellationToken);
+    }
 
     public static async Task<IReadOnlyList<DiskUtilPartition>> ListAllPartitionsAsync(
+        bool wholeDiskMode,
+        bool protectSystemDisk,
         CancellationToken cancellationToken = default)
     {
         var plist = await RunDiskutilAsync(["list", "-plist", "physical"], cancellationToken);
         var rootDict = ParsePlistRootDict(plist);
+        var systemDisk = await GetSystemWholeDiskIdAsync(cancellationToken);
         var result = new List<DiskUtilPartition>();
 
         foreach (var disk in EnumerateDictArray(rootDict, "AllDisksAndPartitions"))
@@ -45,6 +73,25 @@ public static partial class MacOSDiskUtil
             var diskInfo = await GetDiskInfoAsync("/dev/" + diskId, cancellationToken);
             if (diskInfo.SectorSize == 0)
                 continue;
+
+            var isSystem = !string.IsNullOrEmpty(systemDisk) && diskId == systemDisk;
+            if (protectSystemDisk && isSystem)
+                continue;
+
+            if (wholeDiskMode)
+            {
+                if (diskInfo.Size == 0) continue;
+                result.Add(new(
+                    Device: "/dev/r" + diskId,
+                    Offset: 0,
+                    Length: diskInfo.Size,
+                    SectorSize: diskInfo.SectorSize,
+                    DisplayName: string.Format(Resources.Strings.PartitionNameWholeDisk, "/dev/" + diskId),
+                    WholeDiskId: diskId,
+                    IsWholeDisk: true,
+                    IsSystemDisk: isSystem));
+                continue;
+            }
 
             foreach (var part in EnumerateDictArray(disk, "Partitions"))
             {
@@ -63,12 +110,15 @@ public static partial class MacOSDiskUtil
                 // Use the raw character device for unbuffered, byte-aligned I/O.
                 var device = "/dev/r" + diskId;
 
-                result.Add(new DiskUtilPartition(
+                result.Add(new(
                     Device: device,
                     Offset: partInfo.Offset,
                     Length: partInfo.Size,
                     SectorSize: diskInfo.SectorSize,
-                    DisplayName: $"Disk /dev/{diskId} Partition {partId} ({name})"));
+                    DisplayName: string.Format(Resources.Strings.PartitionNameDiskPartition, "/dev/" + diskId, partId, name),
+                    WholeDiskId: diskId,
+                    IsWholeDisk: false,
+                    IsSystemDisk: isSystem));
             }
         }
 
@@ -98,14 +148,14 @@ public static partial class MacOSDiskUtil
         {
             var plist = await RunDiskutilAsync(["info", "-plist", device], cancellationToken);
             var dict = ParsePlistRootDict(plist);
-            return new DiskInfo(
+            return new(
                 Size: ReadUInt64(dict, "Size"),
                 Offset: ReadUInt64(dict, "PartitionMapPartitionOffset"),
                 SectorSize: ReadUInt64(dict, "DeviceBlockSize"));
         }
         catch
         {
-            return new DiskInfo(0, 0, 0);
+            return new(0, 0, 0);
         }
     }
 

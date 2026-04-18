@@ -277,7 +277,7 @@ public sealed partial class OsascriptPrivilegedDiskGateway : IPrivilegedDiskGate
             _socketPath = socketPath;
             _access = access;
             _logger = logger;
-            _inner = new NetworkStream(connection, ownsSocket: false);
+            _inner = new(connection, ownsSocket: false);
         }
 
         private readonly ILogger _logger;

@@ -9,6 +9,6 @@
     x:Class="WinPartFlash.Gui.Views.PartitionItemView"
     x:DataType="vm:PartitionItemViewModel"
     Initialized="PartitionItemViewInitialized"
-    xmlns:reactiveui="http://reactiveui.net">
+    xmlns:reactiveui="using:ReactiveUI.Avalonia">
     <TextBlock Text="{Binding Value.Name}" />
 </reactiveui:ReactiveUserControl>

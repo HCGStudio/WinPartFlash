@@ -1,4 +1,4 @@
-using Avalonia.ReactiveUI;
+using ReactiveUI.Avalonia;
 using WinPartFlash.Gui.ViewModels;
 
 namespace WinPartFlash.Gui.Views;
@@ -10,6 +10,4 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         ViewModel = viewModel;
         InitializeComponent();
     }
-
-    //public MainWindowViewModel ViewModel { get; set; }
 }

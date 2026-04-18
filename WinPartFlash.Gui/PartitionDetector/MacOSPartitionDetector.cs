@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,7 +28,7 @@ public sealed partial class MacOSPartitionDetector : IPartitionDetector
         _logger = logger;
     }
 
-    public IList<PartitionResult> DetectPartitions()
+    public IList<PartitionResult> DetectPartitions(PartitionScanOptions options)
     {
         // LoadPartitionsCommand fires on the Avalonia UI thread; awaiting
         // inline would deadlock the SynchronizationContext we'd need to
@@ -37,13 +36,17 @@ public sealed partial class MacOSPartitionDetector : IPartitionDetector
         return Task.Run(async () =>
         {
             LogDetectStarted();
-            var parts = await MacOSDiskUtil.ListAllPartitionsAsync();
+            var parts = await MacOSDiskUtil.ListAllPartitionsAsync(
+                options.WholeDiskMode, options.ProtectSystemDisk);
             LogDetectFinished(parts.Count);
             return parts
                 .Select(p => new PartitionResult(
                     p.DisplayName,
                     p.Length,
-                    new Lazy<Stream>(() => OpenPartitionStream(p))))
+                    () => OpenPartitionStream(p),
+                    DiskDeviceId: "/dev/" + p.WholeDiskId,
+                    IsWholeDisk: p.IsWholeDisk,
+                    IsSystemDisk: p.IsSystemDisk))
                 .ToList<PartitionResult>();
         }).GetAwaiter().GetResult();
     }

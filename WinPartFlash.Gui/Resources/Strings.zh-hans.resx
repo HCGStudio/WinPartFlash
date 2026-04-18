@@ -60,6 +60,18 @@
     <data name="AppSubtitle" xml:space="preserve">
         <value>对块级分区进行镜像与刷写。</value>
     </data>
+    <data name="SectionNavigation" xml:space="preserve">
+        <value>工作流</value>
+    </data>
+    <data name="DialogButtonOk" xml:space="preserve">
+        <value>好</value>
+    </data>
+    <data name="DialogButtonCancel" xml:space="preserve">
+        <value>取消</value>
+    </data>
+    <data name="DialogButtonConfirm" xml:space="preserve">
+        <value>确认</value>
+    </data>
     <data name="SectionSource" xml:space="preserve">
         <value>来源</value>
     </data>
@@ -78,10 +90,10 @@
     <data name="SectionStatus" xml:space="preserve">
         <value>状态</value>
     </data>
-    <data name="TabAdvanced" xml:space="preserve">
-        <value>高级</value>
+    <data name="TabLogging" xml:space="preserve">
+        <value>日志</value>
     </data>
-    <data name="AdvancedComingSoon" xml:space="preserve">
+    <data name="LoggingComingSoon" xml:space="preserve">
         <value>开发中，敬请期待！</value>
     </data>
     <data name="MenuFile" xml:space="preserve">
@@ -93,11 +105,22 @@
     <data name="MenuFlashPartition" xml:space="preserve">
         <value>刷写分区</value>
     </data>
-    <data name="MenuAdvanced" xml:space="preserve">
-        <value>高级</value>
+    <data name="MenuLogging" xml:space="preserve">
+        <value>日志</value>
     </data>
-    <data name="MenuSettings" xml:space="preserve">
-        <value>设置</value>
+    <data name="MenuReloadPartitions" xml:space="preserve">
+        <value>重新载入分区</value>
+    </data>
+    <data name="MenuAbout" xml:space="preserve">
+        <value>关于 WinPartFlash</value>
+    </data>
+    <data name="AboutDialogTitle" xml:space="preserve">
+        <value>关于</value>
+    </data>
+    <data name="AboutDialogFormat" xml:space="preserve">
+        <value>{0}
+版本 {1}
+{2}</value>
     </data>
     <data name="SaveFileDialogTitle" xml:space="preserve">
         <value>保存文件</value>
@@ -119,5 +142,200 @@
     </data>
     <data name="InfoPrivilegedFallbackInUse" xml:space="preserve">
         <value>当前构建未注册 LaunchDaemon，正在使用按操作授权的回退路径。</value>
+    </data>
+    <data name="SectionSystemInfo" xml:space="preserve">
+        <value>系统</value>
+    </data>
+    <data name="SectionActivityLog" xml:space="preserve">
+        <value>活动日志</value>
+    </data>
+    <data name="LabelAppVersion" xml:space="preserve">
+        <value>应用版本</value>
+    </data>
+    <data name="LabelRuntime" xml:space="preserve">
+        <value>运行时</value>
+    </data>
+    <data name="LabelOperatingSystem" xml:space="preserve">
+        <value>操作系统</value>
+    </data>
+    <data name="LabelNativeLibrary" xml:space="preserve">
+        <value>本机库</value>
+    </data>
+    <data name="LabelPrivilegedHelper" xml:space="preserve">
+        <value>特权辅助程序</value>
+    </data>
+    <data name="StatusAvailable" xml:space="preserve">
+        <value>可用</value>
+    </data>
+    <data name="StatusUnavailable" xml:space="preserve">
+        <value>不可用</value>
+    </data>
+    <data name="StatusNotApplicable" xml:space="preserve">
+        <value>不适用</value>
+    </data>
+    <data name="ButtonCopyLog" xml:space="preserve">
+        <value>复制</value>
+    </data>
+    <data name="ButtonClearLog" xml:space="preserve">
+        <value>清空</value>
+    </data>
+    <data name="LabelThroughput" xml:space="preserve">
+        <value>速率</value>
+    </data>
+    <data name="LabelEta" xml:space="preserve">
+        <value>剩余</value>
+    </data>
+    <data name="LabelElapsed" xml:space="preserve">
+        <value>已用</value>
+    </data>
+    <data name="LogSaveStarted" xml:space="preserve">
+        <value>开始保存：分区 {0}（{1}）-&gt; {2}</value>
+    </data>
+    <data name="LogSaveCompleted" xml:space="preserve">
+        <value>保存完成：{0}，用时 {1}</value>
+    </data>
+    <data name="LogFlashStarted" xml:space="preserve">
+        <value>开始刷写：{0} -&gt; 分区 {1}（{2}）</value>
+    </data>
+    <data name="LogFlashCompleted" xml:space="preserve">
+        <value>刷写完成：分区 {0}，用时 {1}</value>
+    </data>
+    <data name="LogOperationFailed" xml:space="preserve">
+        <value>操作失败：{0}</value>
+    </data>
+    <data name="LogChecksumSidecarWritten" xml:space="preserve">
+        <value>已写入校验文件：{0}（SHA-256 {1}）</value>
+    </data>
+    <data name="LogChecksumSidecarFound" xml:space="preserve">
+        <value>检测到校验文件：{0}</value>
+    </data>
+    <data name="LogChecksumVerified" xml:space="preserve">
+        <value>写入内容与校验文件一致（SHA-256 {0}）。</value>
+    </data>
+    <data name="LogVerifyStarted" xml:space="preserve">
+        <value>正在重新读取分区以校验写入内容……</value>
+    </data>
+    <data name="LogVerifyCompleted" xml:space="preserve">
+        <value>写后校验成功（SHA-256 {0}）。</value>
+    </data>
+    <data name="ErrorChecksumMismatch" xml:space="preserve">
+        <value>与校验文件不一致。期望 {0}，实际 {1}。</value>
+    </data>
+    <data name="ErrorVerifyMismatch" xml:space="preserve">
+        <value>写后校验失败。写入哈希 {0}，回读哈希 {1}。</value>
+    </data>
+    <data name="LabelVerifyAfterWrite" xml:space="preserve">
+        <value>写入后校验</value>
+    </data>
+    <data name="SectionCompression" xml:space="preserve">
+        <value>压缩</value>
+    </data>
+    <data name="LabelCompressionLevel" xml:space="preserve">
+        <value>压缩级别</value>
+    </data>
+    <data name="LabelCompressionWorkers" xml:space="preserve">
+        <value>并行线程（zstd）</value>
+    </data>
+    <data name="ButtonProbeRatio" xml:space="preserve">
+        <value>估算压缩比</value>
+    </data>
+    <data name="ProbeResultFormat" xml:space="preserve">
+        <value>{0} → {1}（{2:P1}），耗时 {3}</value>
+    </data>
+    <data name="ProbeResultRaw" xml:space="preserve">
+        <value>当前为 raw 格式，无需压缩。</value>
+    </data>
+    <data name="LogProbeCompleted" xml:space="preserve">
+        <value>压缩比估算：{0} 样本压缩至 {1}（{2:P1}），耗时 {3}。</value>
+    </data>
+    <data name="LabelWholeDiskMode" xml:space="preserve">
+        <value>整盘模式</value>
+    </data>
+    <data name="LabelProtectSystemDisk" xml:space="preserve">
+        <value>保护系统盘</value>
+    </data>
+    <data name="LabelEjectAfterFlash" xml:space="preserve">
+        <value>写入后弹出</value>
+    </data>
+    <data name="LogEjectCompleted" xml:space="preserve">
+        <value>已弹出磁盘 {0}。</value>
+    </data>
+    <data name="LogEjectFailed" xml:space="preserve">
+        <value>弹出 {0} 失败：{1}</value>
+    </data>
+    <data name="TabInspect" xml:space="preserve">
+        <value>检查</value>
+    </data>
+    <data name="MenuInspect" xml:space="preserve">
+        <value>检查</value>
+    </data>
+    <data name="InspectSectionGpt" xml:space="preserve">
+        <value>GPT 查看器</value>
+    </data>
+    <data name="InspectSectionHex" xml:space="preserve">
+        <value>十六进制预览</value>
+    </data>
+    <data name="InspectGptHint" xml:space="preserve">
+        <value>解析所选磁盘的 GPT 头和分区表项。需启用整盘模式或选中整盘条目。</value>
+    </data>
+    <data name="InspectHexHint" xml:space="preserve">
+        <value>从所选分区（或磁盘）读取指定区段，并展示十六进制与 ASCII 内容。</value>
+    </data>
+    <data name="InspectButtonScanGpt" xml:space="preserve">
+        <value>扫描 GPT</value>
+    </data>
+    <data name="InspectButtonHexPeek" xml:space="preserve">
+        <value>读取</value>
+    </data>
+    <data name="InspectHexOffset" xml:space="preserve">
+        <value>偏移（字节）</value>
+    </data>
+    <data name="InspectHexLength" xml:space="preserve">
+        <value>长度（字节）</value>
+    </data>
+    <data name="InspectSelectPartition" xml:space="preserve">
+        <value>请在上方选择要检查的分区。</value>
+    </data>
+    <data name="InspectGptNeedsDisk" xml:space="preserve">
+        <value>GPT 解析需要磁盘设备——请选中分区或启用整盘模式。</value>
+    </data>
+    <data name="InspectGptNotFound" xml:space="preserve">
+        <value>未在 LBA 1 处找到有效的 GPT（已尝试 512B 与 4096B 扇区）。</value>
+    </data>
+    <data name="InspectGptScanDone" xml:space="preserve">
+        <value>GPT 扫描完成，共有 {0} 个已填充条目。</value>
+    </data>
+    <data name="InspectGptHeaderFormat" xml:space="preserve">
+        <value>磁盘 GUID：{0}
+扇区大小 ：{1} B
+可用范围 ：LBA {2} — {3}
+表项数量 ：{4} × {5} B</value>
+    </data>
+    <data name="InspectHexDone" xml:space="preserve">
+        <value>已在偏移 {1} 处读取 {0}。</value>
+    </data>
+    <data name="InspectHexBadLength" xml:space="preserve">
+        <value>长度必须为正数。</value>
+    </data>
+    <data name="InspectHexBadOffset" xml:space="preserve">
+        <value>偏移必须为非负数。</value>
+    </data>
+    <data name="InspectHexOffsetBeyondEnd" xml:space="preserve">
+        <value>偏移超出流长度。</value>
+    </data>
+    <data name="InspectHexStreamNotSeekable" xml:space="preserve">
+        <value>所选流不支持定位。</value>
+    </data>
+    <data name="InspectLogGptScan" xml:space="preserve">
+        <value>GPT 扫描：{0} 返回 {1} 个已填充条目。</value>
+    </data>
+    <data name="InspectLogHexPeek" xml:space="preserve">
+        <value>十六进制预览：{0}，偏移 {1}，读取 {2} 字节。</value>
+    </data>
+    <data name="PartitionNameWholeDisk" xml:space="preserve">
+        <value>整盘 {0}</value>
+    </data>
+    <data name="PartitionNameDiskPartition" xml:space="preserve">
+        <value>磁盘 {0} 分区 {1}（{2}）</value>
     </data>
 </root>

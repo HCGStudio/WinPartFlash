@@ -10,6 +10,8 @@
     <string>WinPartFlash</string>
     <key>CFBundleExecutable</key>
     <string>__EXECUTABLE__</string>
+    <key>CFBundleIconFile</key>
+    <string>app-icon</string>
     <key>CFBundleIdentifier</key>
     <string>com.hcgstudio.winpartflash.gui</string>
     <key>CFBundleInfoDictionaryVersion</key>

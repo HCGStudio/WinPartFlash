@@ -84,6 +84,22 @@
         <value>Image and flash block-level partitions.</value>
         <comment>Subtitle shown under the app title in the main window.</comment>
     </data>
+    <data name="SectionNavigation" xml:space="preserve">
+        <value>WORKFLOW</value>
+        <comment>Uppercase section label above the left-rail navigation list.</comment>
+    </data>
+    <data name="DialogButtonOk" xml:space="preserve">
+        <value>OK</value>
+        <comment>Primary button in the generic message dialog.</comment>
+    </data>
+    <data name="DialogButtonCancel" xml:space="preserve">
+        <value>Cancel</value>
+        <comment>Cancel button in the confirm dialog.</comment>
+    </data>
+    <data name="DialogButtonConfirm" xml:space="preserve">
+        <value>Confirm</value>
+        <comment>Primary button in the confirm dialog.</comment>
+    </data>
     <data name="SectionSource" xml:space="preserve">
         <value>SOURCE</value>
         <comment>Section label above the source partition selector on the Save tab.</comment>
@@ -106,15 +122,15 @@
     </data>
     <data name="SectionStatus" xml:space="preserve">
         <value>STATUS</value>
-        <comment>Section label on the Advanced tab.</comment>
+        <comment>Section label on the Logging tab.</comment>
     </data>
-    <data name="TabAdvanced" xml:space="preserve">
-        <value>Advanced</value>
-        <comment>Tab header for the Advanced tab.</comment>
+    <data name="TabLogging" xml:space="preserve">
+        <value>Logging</value>
+        <comment>Tab header for the Logging tab (activity log + system info).</comment>
     </data>
-    <data name="AdvancedComingSoon" xml:space="preserve">
+    <data name="LoggingComingSoon" xml:space="preserve">
         <value>WIP. Coming Soon!</value>
-        <comment>Placeholder text on the Advanced tab.</comment>
+        <comment>Placeholder text on the Logging tab.</comment>
     </data>
     <data name="MenuFile" xml:space="preserve">
         <value>File</value>
@@ -128,13 +144,27 @@
         <value>Flash Partition</value>
         <comment>Native menu entry that opens the Flash Partition tab.</comment>
     </data>
-    <data name="MenuAdvanced" xml:space="preserve">
-        <value>Advanced</value>
-        <comment>Native menu entry that opens the Advanced tab.</comment>
+    <data name="MenuLogging" xml:space="preserve">
+        <value>Logging</value>
+        <comment>Native menu entry that opens the Logging tab.</comment>
     </data>
-    <data name="MenuSettings" xml:space="preserve">
-        <value>Settings</value>
-        <comment>Native menu entry that opens settings.</comment>
+    <data name="MenuReloadPartitions" xml:space="preserve">
+        <value>Reload Partitions</value>
+        <comment>Native menu entry that reloads the partition list.</comment>
+    </data>
+    <data name="MenuAbout" xml:space="preserve">
+        <value>About WinPartFlash</value>
+        <comment>Native menu entry that shows the About dialog.</comment>
+    </data>
+    <data name="AboutDialogTitle" xml:space="preserve">
+        <value>About</value>
+        <comment>Title of the About dialog.</comment>
+    </data>
+    <data name="AboutDialogFormat" xml:space="preserve">
+        <value>{0}
+Version {1}
+{2}</value>
+        <comment>Body of the About dialog. {0} app name, {1} version, {2} subtitle.</comment>
     </data>
     <data name="SaveFileDialogTitle" xml:space="preserve">
         <value>Save File</value>
@@ -163,5 +193,264 @@
     <data name="InfoPrivilegedFallbackInUse" xml:space="preserve">
         <value>Using the per-operation authorization fallback because the LaunchDaemon is not registered on this build.</value>
         <comment>Diagnostic message shown when the SMAppService daemon path is unavailable and the GUI falls back to osascript.</comment>
+    </data>
+    <data name="SectionSystemInfo" xml:space="preserve">
+        <value>SYSTEM</value>
+        <comment>Section label above the system/environment readout on the Logging tab.</comment>
+    </data>
+    <data name="SectionActivityLog" xml:space="preserve">
+        <value>ACTIVITY LOG</value>
+        <comment>Section label above the activity log list on the Logging tab.</comment>
+    </data>
+    <data name="LabelAppVersion" xml:space="preserve">
+        <value>App version</value>
+        <comment>Row label in the system-info readout.</comment>
+    </data>
+    <data name="LabelRuntime" xml:space="preserve">
+        <value>Runtime</value>
+        <comment>Row label in the system-info readout for the .NET runtime version.</comment>
+    </data>
+    <data name="LabelOperatingSystem" xml:space="preserve">
+        <value>Operating system</value>
+        <comment>Row label in the system-info readout.</comment>
+    </data>
+    <data name="LabelNativeLibrary" xml:space="preserve">
+        <value>Native library</value>
+        <comment>Row label in the system-info readout for the libWinPartFlashLib status.</comment>
+    </data>
+    <data name="LabelPrivilegedHelper" xml:space="preserve">
+        <value>Privileged helper</value>
+        <comment>Row label in the system-info readout for the macOS privileged helper status.</comment>
+    </data>
+    <data name="StatusAvailable" xml:space="preserve">
+        <value>Available</value>
+        <comment>System-info value indicating a component is present and reachable.</comment>
+    </data>
+    <data name="StatusUnavailable" xml:space="preserve">
+        <value>Unavailable</value>
+        <comment>System-info value indicating a component is missing or could not be reached.</comment>
+    </data>
+    <data name="StatusNotApplicable" xml:space="preserve">
+        <value>Not applicable</value>
+        <comment>System-info value for a component that doesn't apply to the current platform.</comment>
+    </data>
+    <data name="ButtonCopyLog" xml:space="preserve">
+        <value>Copy</value>
+        <comment>Button that copies the activity log to the clipboard.</comment>
+    </data>
+    <data name="ButtonClearLog" xml:space="preserve">
+        <value>Clear</value>
+        <comment>Button that clears the activity log.</comment>
+    </data>
+    <data name="LabelThroughput" xml:space="preserve">
+        <value>Throughput</value>
+        <comment>Label above the live bytes-per-second readout on the Save/Flash tabs.</comment>
+    </data>
+    <data name="LabelEta" xml:space="preserve">
+        <value>ETA</value>
+        <comment>Label above the live estimated-time-remaining readout on the Save/Flash tabs.</comment>
+    </data>
+    <data name="LabelElapsed" xml:space="preserve">
+        <value>Elapsed</value>
+        <comment>Label above the live elapsed-time readout on the Save/Flash tabs.</comment>
+    </data>
+    <data name="LogSaveStarted" xml:space="preserve">
+        <value>Save started: partition {0} ({1}) -&gt; {2}</value>
+        <comment>Activity-log entry emitted when a save operation begins. {0} partition name, {1} size, {2} destination file.</comment>
+    </data>
+    <data name="LogSaveCompleted" xml:space="preserve">
+        <value>Save completed: {0} in {1}</value>
+        <comment>Activity-log entry emitted when a save operation succeeds. {0} destination file, {1} elapsed duration.</comment>
+    </data>
+    <data name="LogFlashStarted" xml:space="preserve">
+        <value>Flash started: {0} -&gt; partition {1} ({2})</value>
+        <comment>Activity-log entry emitted when a flash operation begins. {0} source file, {1} partition name, {2} size.</comment>
+    </data>
+    <data name="LogFlashCompleted" xml:space="preserve">
+        <value>Flash completed: partition {0} in {1}</value>
+        <comment>Activity-log entry emitted when a flash operation succeeds. {0} partition name, {1} elapsed duration.</comment>
+    </data>
+    <data name="LogOperationFailed" xml:space="preserve">
+        <value>Operation failed: {0}</value>
+        <comment>Activity-log entry emitted when a save/flash operation throws. {0} is the error message.</comment>
+    </data>
+    <data name="LogChecksumSidecarWritten" xml:space="preserve">
+        <value>Checksum sidecar written: {0} (SHA-256 {1})</value>
+        <comment>Activity-log entry after the .sha256 sidecar is saved. {0} sidecar filename, {1} hex digest.</comment>
+    </data>
+    <data name="LogChecksumSidecarFound" xml:space="preserve">
+        <value>Checksum sidecar detected: {0}</value>
+        <comment>Activity-log entry when a .sha256 sidecar is found next to a flash source. {0} sidecar filename.</comment>
+    </data>
+    <data name="LogChecksumVerified" xml:space="preserve">
+        <value>Checksum verified against sidecar (SHA-256 {0}).</value>
+        <comment>Activity-log entry after the streaming hash matched the sidecar during flash. {0} hex digest.</comment>
+    </data>
+    <data name="LogVerifyStarted" xml:space="preserve">
+        <value>Verifying written data by re-reading the partition…</value>
+        <comment>Activity-log entry emitted at the start of verify-after-write.</comment>
+    </data>
+    <data name="LogVerifyCompleted" xml:space="preserve">
+        <value>Verify-after-write succeeded (SHA-256 {0}).</value>
+        <comment>Activity-log entry emitted after the read-back hash matched. {0} hex digest.</comment>
+    </data>
+    <data name="ErrorChecksumMismatch" xml:space="preserve">
+        <value>Checksum mismatch against sidecar. Expected {0}, got {1}.</value>
+        <comment>Error when the streaming hash during flash does not match the sidecar. {0} expected hex, {1} actual hex.</comment>
+    </data>
+    <data name="ErrorVerifyMismatch" xml:space="preserve">
+        <value>Verify-after-write mismatch. Written hash {0}, read-back hash {1}.</value>
+        <comment>Error when re-reading the partition produced a different hash than what was written. {0} written hex, {1} read-back hex.</comment>
+    </data>
+    <data name="LabelVerifyAfterWrite" xml:space="preserve">
+        <value>Verify after write</value>
+        <comment>Checkbox on the Flash tab that enables re-reading the partition and comparing hashes.</comment>
+    </data>
+    <data name="SectionCompression" xml:space="preserve">
+        <value>COMPRESSION</value>
+        <comment>Section label above the compression level / workers / probe controls on the Save tab.</comment>
+    </data>
+    <data name="LabelCompressionLevel" xml:space="preserve">
+        <value>Level</value>
+        <comment>Label for the compression level slider.</comment>
+    </data>
+    <data name="LabelCompressionWorkers" xml:space="preserve">
+        <value>Workers (zstd)</value>
+        <comment>Label for the zstd worker-thread count input. 0 disables multithreading.</comment>
+    </data>
+    <data name="ButtonProbeRatio" xml:space="preserve">
+        <value>Estimate ratio</value>
+        <comment>Button that runs a compression ratio probe on a sample of the selected partition.</comment>
+    </data>
+    <data name="ProbeResultFormat" xml:space="preserve">
+        <value>{0} → {1} ({2:P1}) in {3}</value>
+        <comment>Ratio probe result display. {0} raw sample size, {1} compressed size, {2} ratio (smaller is better), {3} elapsed duration.</comment>
+    </data>
+    <data name="ProbeResultRaw" xml:space="preserve">
+        <value>No compression selected.</value>
+        <comment>Probe result shown when the Raw format is selected.</comment>
+    </data>
+    <data name="LogProbeCompleted" xml:space="preserve">
+        <value>Ratio probe: {0} sample compressed to {1} ({2:P1}) in {3}.</value>
+        <comment>Activity-log entry after a successful ratio probe. {0} sample size, {1} output size, {2} ratio, {3} elapsed.</comment>
+    </data>
+    <data name="LabelWholeDiskMode" xml:space="preserve">
+        <value>Whole-disk mode</value>
+        <comment>Checkbox that switches the partition picker to list whole disks instead of individual partitions.</comment>
+    </data>
+    <data name="LabelProtectSystemDisk" xml:space="preserve">
+        <value>Protect system disk</value>
+        <comment>Checkbox that hides the OS boot disk from the picker to prevent accidental overwrite.</comment>
+    </data>
+    <data name="LabelEjectAfterFlash" xml:space="preserve">
+        <value>Eject after flash</value>
+        <comment>Checkbox on the Flash tab that ejects the target disk after a successful flash.</comment>
+    </data>
+    <data name="LogEjectCompleted" xml:space="preserve">
+        <value>Ejected disk {0}.</value>
+        <comment>Activity-log entry after a successful post-flash eject. {0} device path.</comment>
+    </data>
+    <data name="LogEjectFailed" xml:space="preserve">
+        <value>Eject failed for {0}: {1}</value>
+        <comment>Activity-log entry when the post-flash eject call fails. {0} device path, {1} error message.</comment>
+    </data>
+    <data name="TabInspect" xml:space="preserve">
+        <value>Inspect</value>
+        <comment>Tab header for the Inspect tab.</comment>
+    </data>
+    <data name="MenuInspect" xml:space="preserve">
+        <value>Inspect</value>
+        <comment>Native menu entry that opens the Inspect tab.</comment>
+    </data>
+    <data name="InspectSectionGpt" xml:space="preserve">
+        <value>GPT VIEWER</value>
+        <comment>Section label above the GPT viewer controls.</comment>
+    </data>
+    <data name="InspectSectionHex" xml:space="preserve">
+        <value>HEX PEEK</value>
+        <comment>Section label above the hex peek controls.</comment>
+    </data>
+    <data name="InspectGptHint" xml:space="preserve">
+        <value>Parses the GPT header and entries on the selected disk. Requires whole-disk mode or a whole-disk entry.</value>
+        <comment>Helper text describing the GPT viewer.</comment>
+    </data>
+    <data name="InspectHexHint" xml:space="preserve">
+        <value>Reads a range from the selected partition (or disk) and shows a hex + ASCII dump.</value>
+        <comment>Helper text describing the hex peek tool.</comment>
+    </data>
+    <data name="InspectButtonScanGpt" xml:space="preserve">
+        <value>Scan GPT</value>
+        <comment>Button that triggers a GPT parse on the selected disk.</comment>
+    </data>
+    <data name="InspectButtonHexPeek" xml:space="preserve">
+        <value>Read</value>
+        <comment>Button that reads the configured range and renders a hex dump.</comment>
+    </data>
+    <data name="InspectHexOffset" xml:space="preserve">
+        <value>Offset (bytes)</value>
+        <comment>Label for the hex-peek offset input.</comment>
+    </data>
+    <data name="InspectHexLength" xml:space="preserve">
+        <value>Length (bytes)</value>
+        <comment>Label for the hex-peek length input.</comment>
+    </data>
+    <data name="InspectSelectPartition" xml:space="preserve">
+        <value>Select a partition above to inspect.</value>
+        <comment>Status shown on the Inspect tab when no partition is selected.</comment>
+    </data>
+    <data name="InspectGptNeedsDisk" xml:space="preserve">
+        <value>GPT parsing needs a disk device — select a partition or enable whole-disk mode.</value>
+        <comment>Status shown when the selected entry has no backing disk device id.</comment>
+    </data>
+    <data name="InspectGptNotFound" xml:space="preserve">
+        <value>No valid GPT found at LBA 1 with a 512B or 4096B sector size.</value>
+        <comment>Status shown when GPT parsing fails on the selected disk.</comment>
+    </data>
+    <data name="InspectGptScanDone" xml:space="preserve">
+        <value>GPT scan complete. {0} populated entries.</value>
+        <comment>Status shown after a successful GPT scan. {0} entry count.</comment>
+    </data>
+    <data name="InspectGptHeaderFormat" xml:space="preserve">
+        <value>Disk GUID : {0}
+Sector    : {1} B
+Usable    : LBA {2} — {3}
+Entries   : {4} slots × {5} B</value>
+        <comment>Multi-line GPT header summary. {0} guid, {1} sector size, {2} first usable lba, {3} last usable lba, {4} entry count, {5} entry size.</comment>
+    </data>
+    <data name="InspectHexDone" xml:space="preserve">
+        <value>Read {0} at offset {1}.</value>
+        <comment>Status shown after a successful hex peek. {0} human-readable size, {1} offset.</comment>
+    </data>
+    <data name="InspectHexBadLength" xml:space="preserve">
+        <value>Length must be positive.</value>
+        <comment>Validation error when the hex-peek length is non-positive.</comment>
+    </data>
+    <data name="InspectHexBadOffset" xml:space="preserve">
+        <value>Offset must be non-negative.</value>
+        <comment>Validation error when the hex-peek offset is negative.</comment>
+    </data>
+    <data name="InspectHexOffsetBeyondEnd" xml:space="preserve">
+        <value>Offset is past the end of the stream.</value>
+        <comment>Error when the configured hex-peek offset exceeds the stream length.</comment>
+    </data>
+    <data name="InspectHexStreamNotSeekable" xml:space="preserve">
+        <value>The selected stream does not support seeking.</value>
+        <comment>Error when asking for a non-zero offset on a non-seekable stream.</comment>
+    </data>
+    <data name="InspectLogGptScan" xml:space="preserve">
+        <value>GPT scan: {0} returned {1} populated entries.</value>
+        <comment>Activity-log entry after a successful GPT scan. {0} device id, {1} entry count.</comment>
+    </data>
+    <data name="InspectLogHexPeek" xml:space="preserve">
+        <value>Hex peek: {0} at offset {1}, read {2} bytes.</value>
+        <comment>Activity-log entry after a hex peek. {0} partition name, {1} offset, {2} bytes read.</comment>
+    </data>
+    <data name="PartitionNameWholeDisk" xml:space="preserve">
+        <value>Whole disk {0}</value>
+        <comment>Display name used in the partition picker for a whole-disk entry. {0} is the device path / identifier.</comment>
+    </data>
+    <data name="PartitionNameDiskPartition" xml:space="preserve">
+        <value>Disk {0} Partition {1} ({2})</value>
+        <comment>Display name used in the partition picker for a partition entry. {0} disk device path/identifier, {1} partition index or id, {2} volume/partition label.</comment>
     </data>
 </root>

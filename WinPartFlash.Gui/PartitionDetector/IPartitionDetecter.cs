@@ -4,5 +4,5 @@ namespace WinPartFlash.Gui.PartitionDetector;
 
 public interface IPartitionDetector
 {
-    IList<PartitionResult> DetectPartitions();
+    IList<PartitionResult> DetectPartitions(PartitionScanOptions options);
 }

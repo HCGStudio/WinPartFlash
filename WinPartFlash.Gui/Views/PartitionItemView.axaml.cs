@@ -1,6 +1,6 @@
 using System;
 using Avalonia.Controls;
-using Avalonia.ReactiveUI;
+using ReactiveUI.Avalonia;
 using WinPartFlash.Gui.ViewModels;
 
 namespace WinPartFlash.Gui.Views;

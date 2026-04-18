@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+using Microsoft.Extensions.DependencyInjection;
 using WinPartFlash.Gui.ViewModels;
 using WinPartFlash.Gui.Views;
 
@@ -14,12 +15,12 @@ public class ViewLocator : IDataTemplate
 
     public Control? Build(object? data)
     {
-        if (data == null)
-            return null;
-
-        if (data is PartitionItemViewModel partitionItemViewModel)
-            return new PartitionItemView(partitionItemViewModel);
-
-        return null;
+        return data switch
+        {
+            PartitionItemViewModel vm => new PartitionItemView(vm),
+            LoggingTabViewModel => App.ServiceProvider.GetRequiredService<LoggingTabView>(),
+            InspectTabViewModel => App.ServiceProvider.GetRequiredService<InspectTabView>(),
+            _ => null
+        };
     }
 }

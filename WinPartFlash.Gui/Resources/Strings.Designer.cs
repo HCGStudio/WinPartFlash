@@ -135,6 +135,30 @@ namespace WinPartFlash.Gui.Resources {
             }
         }
 
+        public static string SectionNavigation {
+            get {
+                return ResourceManager.GetString("SectionNavigation", resourceCulture);
+            }
+        }
+
+        public static string DialogButtonOk {
+            get {
+                return ResourceManager.GetString("DialogButtonOk", resourceCulture);
+            }
+        }
+
+        public static string DialogButtonCancel {
+            get {
+                return ResourceManager.GetString("DialogButtonCancel", resourceCulture);
+            }
+        }
+
+        public static string DialogButtonConfirm {
+            get {
+                return ResourceManager.GetString("DialogButtonConfirm", resourceCulture);
+            }
+        }
+
         public static string SectionSource {
             get {
                 return ResourceManager.GetString("SectionSource", resourceCulture);
@@ -171,15 +195,15 @@ namespace WinPartFlash.Gui.Resources {
             }
         }
 
-        public static string TabAdvanced {
+        public static string TabLogging {
             get {
-                return ResourceManager.GetString("TabAdvanced", resourceCulture);
+                return ResourceManager.GetString("TabLogging", resourceCulture);
             }
         }
 
-        public static string AdvancedComingSoon {
+        public static string LoggingComingSoon {
             get {
-                return ResourceManager.GetString("AdvancedComingSoon", resourceCulture);
+                return ResourceManager.GetString("LoggingComingSoon", resourceCulture);
             }
         }
 
@@ -201,15 +225,33 @@ namespace WinPartFlash.Gui.Resources {
             }
         }
 
-        public static string MenuAdvanced {
+        public static string MenuLogging {
             get {
-                return ResourceManager.GetString("MenuAdvanced", resourceCulture);
+                return ResourceManager.GetString("MenuLogging", resourceCulture);
             }
         }
 
-        public static string MenuSettings {
+        public static string MenuReloadPartitions {
             get {
-                return ResourceManager.GetString("MenuSettings", resourceCulture);
+                return ResourceManager.GetString("MenuReloadPartitions", resourceCulture);
+            }
+        }
+
+        public static string MenuAbout {
+            get {
+                return ResourceManager.GetString("MenuAbout", resourceCulture);
+            }
+        }
+
+        public static string AboutDialogTitle {
+            get {
+                return ResourceManager.GetString("AboutDialogTitle", resourceCulture);
+            }
+        }
+
+        public static string AboutDialogFormat {
+            get {
+                return ResourceManager.GetString("AboutDialogFormat", resourceCulture);
             }
         }
 
@@ -252,6 +294,390 @@ namespace WinPartFlash.Gui.Resources {
         public static string InfoPrivilegedFallbackInUse {
             get {
                 return ResourceManager.GetString("InfoPrivilegedFallbackInUse", resourceCulture);
+            }
+        }
+
+        public static string SectionSystemInfo {
+            get {
+                return ResourceManager.GetString("SectionSystemInfo", resourceCulture);
+            }
+        }
+
+        public static string SectionActivityLog {
+            get {
+                return ResourceManager.GetString("SectionActivityLog", resourceCulture);
+            }
+        }
+
+        public static string LabelAppVersion {
+            get {
+                return ResourceManager.GetString("LabelAppVersion", resourceCulture);
+            }
+        }
+
+        public static string LabelRuntime {
+            get {
+                return ResourceManager.GetString("LabelRuntime", resourceCulture);
+            }
+        }
+
+        public static string LabelOperatingSystem {
+            get {
+                return ResourceManager.GetString("LabelOperatingSystem", resourceCulture);
+            }
+        }
+
+        public static string LabelNativeLibrary {
+            get {
+                return ResourceManager.GetString("LabelNativeLibrary", resourceCulture);
+            }
+        }
+
+        public static string LabelPrivilegedHelper {
+            get {
+                return ResourceManager.GetString("LabelPrivilegedHelper", resourceCulture);
+            }
+        }
+
+        public static string StatusAvailable {
+            get {
+                return ResourceManager.GetString("StatusAvailable", resourceCulture);
+            }
+        }
+
+        public static string StatusUnavailable {
+            get {
+                return ResourceManager.GetString("StatusUnavailable", resourceCulture);
+            }
+        }
+
+        public static string StatusNotApplicable {
+            get {
+                return ResourceManager.GetString("StatusNotApplicable", resourceCulture);
+            }
+        }
+
+        public static string ButtonCopyLog {
+            get {
+                return ResourceManager.GetString("ButtonCopyLog", resourceCulture);
+            }
+        }
+
+        public static string ButtonClearLog {
+            get {
+                return ResourceManager.GetString("ButtonClearLog", resourceCulture);
+            }
+        }
+
+        public static string LabelThroughput {
+            get {
+                return ResourceManager.GetString("LabelThroughput", resourceCulture);
+            }
+        }
+
+        public static string LabelEta {
+            get {
+                return ResourceManager.GetString("LabelEta", resourceCulture);
+            }
+        }
+
+        public static string LabelElapsed {
+            get {
+                return ResourceManager.GetString("LabelElapsed", resourceCulture);
+            }
+        }
+
+        public static string LogSaveStarted {
+            get {
+                return ResourceManager.GetString("LogSaveStarted", resourceCulture);
+            }
+        }
+
+        public static string LogSaveCompleted {
+            get {
+                return ResourceManager.GetString("LogSaveCompleted", resourceCulture);
+            }
+        }
+
+        public static string LogFlashStarted {
+            get {
+                return ResourceManager.GetString("LogFlashStarted", resourceCulture);
+            }
+        }
+
+        public static string LogFlashCompleted {
+            get {
+                return ResourceManager.GetString("LogFlashCompleted", resourceCulture);
+            }
+        }
+
+        public static string LogOperationFailed {
+            get {
+                return ResourceManager.GetString("LogOperationFailed", resourceCulture);
+            }
+        }
+
+        public static string LogChecksumSidecarWritten {
+            get {
+                return ResourceManager.GetString("LogChecksumSidecarWritten", resourceCulture);
+            }
+        }
+
+        public static string LogChecksumSidecarFound {
+            get {
+                return ResourceManager.GetString("LogChecksumSidecarFound", resourceCulture);
+            }
+        }
+
+        public static string LogChecksumVerified {
+            get {
+                return ResourceManager.GetString("LogChecksumVerified", resourceCulture);
+            }
+        }
+
+        public static string LogVerifyStarted {
+            get {
+                return ResourceManager.GetString("LogVerifyStarted", resourceCulture);
+            }
+        }
+
+        public static string LogVerifyCompleted {
+            get {
+                return ResourceManager.GetString("LogVerifyCompleted", resourceCulture);
+            }
+        }
+
+        public static string ErrorChecksumMismatch {
+            get {
+                return ResourceManager.GetString("ErrorChecksumMismatch", resourceCulture);
+            }
+        }
+
+        public static string ErrorVerifyMismatch {
+            get {
+                return ResourceManager.GetString("ErrorVerifyMismatch", resourceCulture);
+            }
+        }
+
+        public static string LabelVerifyAfterWrite {
+            get {
+                return ResourceManager.GetString("LabelVerifyAfterWrite", resourceCulture);
+            }
+        }
+
+        public static string SectionCompression {
+            get {
+                return ResourceManager.GetString("SectionCompression", resourceCulture);
+            }
+        }
+
+        public static string LabelCompressionLevel {
+            get {
+                return ResourceManager.GetString("LabelCompressionLevel", resourceCulture);
+            }
+        }
+
+        public static string LabelCompressionWorkers {
+            get {
+                return ResourceManager.GetString("LabelCompressionWorkers", resourceCulture);
+            }
+        }
+
+        public static string ButtonProbeRatio {
+            get {
+                return ResourceManager.GetString("ButtonProbeRatio", resourceCulture);
+            }
+        }
+
+        public static string ProbeResultFormat {
+            get {
+                return ResourceManager.GetString("ProbeResultFormat", resourceCulture);
+            }
+        }
+
+        public static string ProbeResultRaw {
+            get {
+                return ResourceManager.GetString("ProbeResultRaw", resourceCulture);
+            }
+        }
+
+        public static string LogProbeCompleted {
+            get {
+                return ResourceManager.GetString("LogProbeCompleted", resourceCulture);
+            }
+        }
+
+        public static string LabelWholeDiskMode {
+            get {
+                return ResourceManager.GetString("LabelWholeDiskMode", resourceCulture);
+            }
+        }
+
+        public static string LabelProtectSystemDisk {
+            get {
+                return ResourceManager.GetString("LabelProtectSystemDisk", resourceCulture);
+            }
+        }
+
+        public static string LabelEjectAfterFlash {
+            get {
+                return ResourceManager.GetString("LabelEjectAfterFlash", resourceCulture);
+            }
+        }
+
+        public static string LogEjectCompleted {
+            get {
+                return ResourceManager.GetString("LogEjectCompleted", resourceCulture);
+            }
+        }
+
+        public static string LogEjectFailed {
+            get {
+                return ResourceManager.GetString("LogEjectFailed", resourceCulture);
+            }
+        }
+
+        public static string TabInspect {
+            get {
+                return ResourceManager.GetString("TabInspect", resourceCulture);
+            }
+        }
+
+        public static string MenuInspect {
+            get {
+                return ResourceManager.GetString("MenuInspect", resourceCulture);
+            }
+        }
+
+        public static string InspectSectionGpt {
+            get {
+                return ResourceManager.GetString("InspectSectionGpt", resourceCulture);
+            }
+        }
+
+        public static string InspectSectionHex {
+            get {
+                return ResourceManager.GetString("InspectSectionHex", resourceCulture);
+            }
+        }
+
+        public static string InspectGptHint {
+            get {
+                return ResourceManager.GetString("InspectGptHint", resourceCulture);
+            }
+        }
+
+        public static string InspectHexHint {
+            get {
+                return ResourceManager.GetString("InspectHexHint", resourceCulture);
+            }
+        }
+
+        public static string InspectButtonScanGpt {
+            get {
+                return ResourceManager.GetString("InspectButtonScanGpt", resourceCulture);
+            }
+        }
+
+        public static string InspectButtonHexPeek {
+            get {
+                return ResourceManager.GetString("InspectButtonHexPeek", resourceCulture);
+            }
+        }
+
+        public static string InspectHexOffset {
+            get {
+                return ResourceManager.GetString("InspectHexOffset", resourceCulture);
+            }
+        }
+
+        public static string InspectHexLength {
+            get {
+                return ResourceManager.GetString("InspectHexLength", resourceCulture);
+            }
+        }
+
+        public static string InspectSelectPartition {
+            get {
+                return ResourceManager.GetString("InspectSelectPartition", resourceCulture);
+            }
+        }
+
+        public static string InspectGptNeedsDisk {
+            get {
+                return ResourceManager.GetString("InspectGptNeedsDisk", resourceCulture);
+            }
+        }
+
+        public static string InspectGptNotFound {
+            get {
+                return ResourceManager.GetString("InspectGptNotFound", resourceCulture);
+            }
+        }
+
+        public static string InspectGptScanDone {
+            get {
+                return ResourceManager.GetString("InspectGptScanDone", resourceCulture);
+            }
+        }
+
+        public static string InspectGptHeaderFormat {
+            get {
+                return ResourceManager.GetString("InspectGptHeaderFormat", resourceCulture);
+            }
+        }
+
+        public static string InspectHexDone {
+            get {
+                return ResourceManager.GetString("InspectHexDone", resourceCulture);
+            }
+        }
+
+        public static string InspectHexBadLength {
+            get {
+                return ResourceManager.GetString("InspectHexBadLength", resourceCulture);
+            }
+        }
+
+        public static string InspectHexBadOffset {
+            get {
+                return ResourceManager.GetString("InspectHexBadOffset", resourceCulture);
+            }
+        }
+
+        public static string InspectHexOffsetBeyondEnd {
+            get {
+                return ResourceManager.GetString("InspectHexOffsetBeyondEnd", resourceCulture);
+            }
+        }
+
+        public static string InspectHexStreamNotSeekable {
+            get {
+                return ResourceManager.GetString("InspectHexStreamNotSeekable", resourceCulture);
+            }
+        }
+
+        public static string InspectLogGptScan {
+            get {
+                return ResourceManager.GetString("InspectLogGptScan", resourceCulture);
+            }
+        }
+
+        public static string InspectLogHexPeek {
+            get {
+                return ResourceManager.GetString("InspectLogHexPeek", resourceCulture);
+            }
+        }
+
+        public static string PartitionNameWholeDisk {
+            get {
+                return ResourceManager.GetString("PartitionNameWholeDisk", resourceCulture);
+            }
+        }
+
+        public static string PartitionNameDiskPartition {
+            get {
+                return ResourceManager.GetString("PartitionNameDiskPartition", resourceCulture);
             }
         }
     }

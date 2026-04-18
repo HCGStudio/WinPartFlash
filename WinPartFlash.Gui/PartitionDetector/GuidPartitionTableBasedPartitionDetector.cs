@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using WinPartFlash.Gui.GuidPartition;
+using WinPartFlash.Gui.Resources;
 using WinPartFlash.Gui.Utils;
 
 namespace WinPartFlash.Gui.PartitionDetector;
@@ -18,7 +19,7 @@ public abstract class GuidPartitionTableBasedPartitionDetector : IPartitionDetec
         return 35;
     }
 
-    public unsafe IList<PartitionResult> DetectPartitions()
+    public unsafe IList<PartitionResult> DetectPartitions(PartitionScanOptions options)
     {
         var result = new List<PartitionResult>();
         var disks = GetDisks();
@@ -27,6 +28,25 @@ public abstract class GuidPartitionTableBasedPartitionDetector : IPartitionDetec
 
         foreach (var diskInfo in disks)
         {
+            if (options.ProtectSystemDisk && diskInfo.IsSystem)
+                continue;
+
+            if (options.WholeDiskMode)
+            {
+                var length = diskInfo.TotalSize > 0
+                    ? diskInfo.TotalSize
+                    : TryGetLengthFromFile(diskInfo.Name);
+                if (length == 0) continue;
+                result.Add(new(
+                    string.Format(Strings.PartitionNameWholeDisk, diskInfo.Name),
+                    length,
+                    OpenWholeDisk(diskInfo.Name),
+                    DiskDeviceId: diskInfo.Name,
+                    IsWholeDisk: true,
+                    IsSystemDisk: diskInfo.IsSystem));
+                continue;
+            }
+
             try
             {
                 using var diskFile = File.Open(
@@ -61,10 +81,13 @@ public abstract class GuidPartitionTableBasedPartitionDetector : IPartitionDetec
                         var partitionName = new Span<char>(s, CountStringLength(s, 36));
                         var partitionLength = diskInfo.SectorSize * (entry.EndLba - entry.StartLba + 1);
                         var partitionOffset = diskInfo.SectorSize * entry.StartLba;
-                        result.Add(new PartitionResult(
-                            $"Disk {diskInfo.Name} Partition {index + 1} ({partitionName})",
+                        result.Add(new(
+                            string.Format(Strings.PartitionNameDiskPartition, diskInfo.Name, index + 1, partitionName.ToString()),
                             partitionLength,
-                            new Lazy<Stream>(OpenAndSeekLength(diskInfo.Name, partitionOffset, partitionLength))));
+                            OpenAndSeekLength(diskInfo.Name, partitionOffset, partitionLength),
+                            DiskDeviceId: diskInfo.Name,
+                            IsWholeDisk: false,
+                            IsSystemDisk: diskInfo.IsSystem));
                     }
                 }
             }
@@ -79,6 +102,24 @@ public abstract class GuidPartitionTableBasedPartitionDetector : IPartitionDetec
     }
 
     protected abstract IList<DiskInfo> GetDisks();
+
+    private static ulong TryGetLengthFromFile(string fileName)
+    {
+        try
+        {
+            using var f = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            return (ulong)f.Length;
+        }
+        catch
+        {
+            return 0;
+        }
+    }
+
+    private Func<Stream> OpenWholeDisk(string fileName)
+    {
+        return () => File.Open(fileName, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+    }
 
     private Func<Stream> OpenAndSeekLength(string fileName, ulong offset, ulong length)
     {

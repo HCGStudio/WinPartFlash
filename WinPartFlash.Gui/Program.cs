@@ -1,8 +1,8 @@
 ﻿using System;
 using Avalonia;
-using Avalonia.ReactiveUI;
-using Projektanker.Icons.Avalonia;
-using Projektanker.Icons.Avalonia.FontAwesome;
+using ReactiveUI.Avalonia;
+using Optris.Icons.Avalonia;
+using Optris.Icons.Avalonia.FontAwesome;
 
 namespace WinPartFlash.Gui;
 
@@ -28,6 +28,6 @@ public static class Program
             .UsePlatformDetect()
             .WithInterFont()
             .LogToTrace()
-            .UseReactiveUI();
+            .UseReactiveUI(_ => {});
     }
 }

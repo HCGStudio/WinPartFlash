@@ -1,0 +1,115 @@
+<reactiveui:ReactiveUserControl
+    x:TypeArguments="vm:InspectTabViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:WinPartFlash.Gui.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:lang="clr-namespace:WinPartFlash.Gui.Resources"
+    mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="600"
+    x:Class="WinPartFlash.Gui.Views.InspectTabView"
+    x:DataType="vm:InspectTabViewModel"
+    xmlns:reactiveui="using:ReactiveUI.Avalonia">
+
+    <StackPanel Margin="0 20 0 0" Spacing="22">
+
+        <!-- GPT viewer -->
+        <StackPanel Spacing="10">
+            <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.InspectSectionGpt}" />
+            <TextBlock Classes="Subtitle" TextWrapping="Wrap"
+                       Text="{x:Static lang:Strings.InspectGptHint}" />
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                <Button Grid.Column="0"
+                        Content="{x:Static lang:Strings.InspectButtonScanGpt}"
+                        Command="{Binding ScanGptCommand}"
+                        CommandParameter="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).SelectedPartition}" />
+                <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                           Classes="Subtitle" TextWrapping="Wrap"
+                           Text="{Binding GptStatus}" />
+            </Grid>
+
+            <Border Classes="Surface" Padding="14"
+                    IsVisible="{Binding GptHeaderSummary, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                <TextBlock FontFamily="{StaticResource MonoFont}" FontSize="12"
+                           TextWrapping="Wrap"
+                           Text="{Binding GptHeaderSummary}" />
+            </Border>
+
+            <Border BorderBrush="{StaticResource BorderCool}" BorderThickness="1" CornerRadius="8"
+                    Background="{StaticResource Snow}" Padding="0"
+                    IsVisible="{Binding GptEntries.Count}">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                              MaxHeight="220">
+                    <ItemsControl ItemsSource="{Binding GptEntries}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="vm:GuidPartitionEntryRow">
+                                <Border Padding="10 8" BorderBrush="{StaticResource LightestGray}"
+                                        BorderThickness="0 0 0 1">
+                                    <Grid ColumnDefinitions="32,*,Auto" ColumnSpacing="10" RowDefinitions="Auto,Auto">
+                                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                                   FontFamily="{StaticResource MonoFont}"
+                                                   Foreground="{StaticResource MutedSlate}"
+                                                   Text="{Binding Index, StringFormat={}{0:D2}}" />
+                                        <TextBlock Grid.Row="0" Grid.Column="1"
+                                                   Text="{Binding Name}"
+                                                   TextTrimming="CharacterEllipsis" />
+                                        <TextBlock Grid.Row="0" Grid.Column="2"
+                                                   FontFamily="{StaticResource MonoFont}"
+                                                   Foreground="{StaticResource MutedSlate}"
+                                                   Text="{Binding Size}" />
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+                                                   FontFamily="{StaticResource MonoFont}" FontSize="11"
+                                                   Foreground="{StaticResource MutedSlate}"
+                                                   TextWrapping="Wrap">
+                                            <Run Text="LBA " /><Run Text="{Binding StartLba}" /><Run Text=" — " /><Run Text="{Binding EndLba}" /><Run Text="  •  " /><Run Text="{Binding TypeGuid}" />
+                                        </TextBlock>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
+        </StackPanel>
+
+        <Border Background="{StaticResource LightestGray}" Height="1" />
+
+        <!-- Hex peek -->
+        <StackPanel Spacing="10">
+            <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.InspectSectionHex}" />
+            <TextBlock Classes="Subtitle" TextWrapping="Wrap"
+                       Text="{x:Static lang:Strings.InspectHexHint}" />
+
+            <Grid ColumnDefinitions="*,*,Auto" ColumnSpacing="12">
+                <StackPanel Grid.Column="0" Spacing="4">
+                    <Label Content="{x:Static lang:Strings.InspectHexOffset}" />
+                    <NumericUpDown Minimum="0" Increment="512" FormatString="0"
+                                   Value="{Binding HexOffset}" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Spacing="4">
+                    <Label Content="{x:Static lang:Strings.InspectHexLength}" />
+                    <NumericUpDown Minimum="16" Maximum="65536" Increment="256" FormatString="0"
+                                   Value="{Binding HexLength}" />
+                </StackPanel>
+                <Button Grid.Column="2" VerticalAlignment="Bottom"
+                        Content="{x:Static lang:Strings.InspectButtonHexPeek}"
+                        Command="{Binding HexPeekCommand}"
+                        CommandParameter="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).SelectedPartition}" />
+            </Grid>
+
+            <TextBlock Classes="Subtitle" TextWrapping="Wrap" Text="{Binding HexStatus}" />
+
+            <Border BorderBrush="{StaticResource BorderCool}" BorderThickness="1" CornerRadius="8"
+                    Background="{StaticResource Snow}" Padding="8"
+                    IsVisible="{Binding HexDumpText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                              MaxHeight="260">
+                    <TextBlock FontFamily="{StaticResource MonoFont}" FontSize="12"
+                               Text="{Binding HexDumpText}" />
+                </ScrollViewer>
+            </Border>
+        </StackPanel>
+
+    </StackPanel>
+
+</reactiveui:ReactiveUserControl>

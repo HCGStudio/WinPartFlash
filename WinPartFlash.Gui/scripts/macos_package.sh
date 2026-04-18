@@ -67,6 +67,14 @@ find "$APP/Contents/MacOS" -name '*.pdb' -delete
 sed -e "s/__EXECUTABLE__/$EXECUTABLE/g" -e "s/__VERSION__/$VERSION/g" \
     "$TEMPLATE" > "$APP/Contents/Info.plist"
 
+# Copy the app icon into Resources so CFBundleIconFile resolves.
+ICON_SRC="$SCRIPT_DIR/../Assets/app-icon.icns"
+if [ -f "$ICON_SRC" ]; then
+    cp "$ICON_SRC" "$APP/Contents/Resources/app-icon.icns"
+else
+    echo "Warning: app-icon.icns not found at $ICON_SRC" >&2
+fi
+
 # Build a read-only compressed dmg.  UDZO is the standard format Finder mounts
 # without complaint and is what `notarytool` accepts as a submission payload.
 hdiutil create -volname "WinPartFlash" -srcfolder "$APP" -ov -format UDZO "$DMG"

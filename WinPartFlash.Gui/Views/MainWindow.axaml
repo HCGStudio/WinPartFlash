@@ -6,16 +6,17 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:lang="clr-namespace:WinPartFlash.Gui.Resources"
-    mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="560"
+    xmlns:views="clr-namespace:WinPartFlash.Gui.Views"
+    xmlns:anim="using:Avalonia.Animation"
+    mc:Ignorable="d" d:DesignWidth="980" d:DesignHeight="680"
     x:Class="WinPartFlash.Gui.Views.MainWindow"
-    xmlns:reactiveui="http://reactiveui.net"
+    xmlns:reactiveui="using:ReactiveUI.Avalonia"
     xmlns:avalonia="https://github.com/projektanker/icons.avalonia"
     x:DataType="vm:MainWindowViewModel"
-    Icon="/Assets/avalonia-logo.ico"
-    SizeToContent="WidthAndHeight"
-    MinWidth="600"
-    CanResize="False"
-    Background="{StaticResource PureWhite}"
+    Icon="/Assets/app-icon.ico"
+    Width="980" Height="680"
+    MinWidth="860" MinHeight="600"
+    Background="{StaticResource Snow}"
     IsEnabled="{Binding IsMainWindowEnabled}"
     Title="{x:Static lang:Strings.AppName}">
 
@@ -25,154 +26,420 @@
         </EventTriggerBehavior>
     </Interaction.Behaviors>
 
-    <Border Margin="32" Classes="Card">
-        <StackPanel Spacing="20">
+    <Grid Margin="28" RowDefinitions="Auto,20,*" ColumnDefinitions="*">
 
-            <!-- Header -->
-            <StackPanel Spacing="6">
-                <TextBlock Classes="SectionLabel" Text="WINPARTFLASH" />
-                <TextBlock Classes="Display" Text="{x:Static lang:Strings.AppName}" />
-                <TextBlock Classes="Subtitle"
-                           Text="{x:Static lang:Strings.AppSubtitle}" />
-            </StackPanel>
-
-            <Border Background="{StaticResource LightestGray}" Height="1" />
-
-            <TabControl>
-
-                <TabItem Header="{x:Static lang:Strings.SavePartition}">
-                    <StackPanel Margin="0 20 0 0" Spacing="16">
-
-                        <StackPanel Spacing="6">
-                            <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionSource}" />
-                            <Label Content="{x:Static lang:Strings.LabelPartition}" />
-                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                <ComboBox Grid.Column="0"
-                                          HorizontalAlignment="Stretch"
-                                          ItemsSource="{Binding PartitionItems}"
-                                          SelectedItem="{Binding SelectedPartition}" />
-                                <Button Grid.Column="1"
-                                        Classes="Icon"
-                                        avalonia:Attached.Icon="fa-solid fa-arrows-rotate"
-                                        FontSize="14"
-                                        ToolTip.Tip="{x:Static lang:Strings.ReloadPartition}"
-                                        Command="{Binding LoadPartitionsCommand}" />
-                            </Grid>
-                        </StackPanel>
-
-                        <StackPanel Spacing="6">
-                            <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionDestination}" />
-                            <Label Content="{x:Static lang:Strings.LabelFileToSave}" />
-                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                <TextBox Grid.Column="0"
-                                         Text="{Binding SavePartitionFileName}" />
-                                <Button Grid.Column="1"
-                                        Name="BrowseSaveButton"
-                                        Content="{x:Static lang:Strings.BrowseButton}"
-                                        Command="{Binding BrowseSaveFileCommand}"
-                                        CommandParameter="{Binding #BrowseSaveButton}" />
-                            </Grid>
-                        </StackPanel>
-
-                        <StackPanel Spacing="6">
-                            <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionFormat}" />
-                            <Label Content="{x:Static lang:Strings.LabelFormat}" />
-                            <StackPanel Orientation="Horizontal" Spacing="16">
-                                <RadioButton Content="raw" IsChecked="{Binding IsSaveRawFileChecked}" />
-                                <RadioButton Content="gz" IsChecked="{Binding IsSaveGzipFileChecked}" />
-                                <RadioButton Content="lz4" IsChecked="{Binding IsSaveLz4FileChecked}" />
-                                <RadioButton Content="zst" IsChecked="{Binding IsSaveZstandardFileChecked}" />
-                            </StackPanel>
-                        </StackPanel>
-
-                        <StackPanel Spacing="6">
-                            <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionProgress}" />
-                            <ProgressBar Value="{Binding Progress}"
-                                         IsIndeterminate="{Binding IsBackgroundTaskRunning}" />
-                        </StackPanel>
-
-                        <Button Name="SaveButton"
-                                Classes="Primary"
-                                HorizontalAlignment="Right"
-                                Content="{x:Static lang:Strings.SaveButton}"
-                                IsEnabled="{Binding IsSaveButtonEnabled}"
-                                Command="{Binding SavePartitionCommand}"
-                                CommandParameter="{Binding #SaveButton}" />
-                    </StackPanel>
-                </TabItem>
-
-                <TabItem Header="{x:Static lang:Strings.WritePartition}">
-                    <StackPanel Margin="0 20 0 0" Spacing="16">
-
-                        <StackPanel Spacing="6">
-                            <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionTarget}" />
-                            <Label Content="{x:Static lang:Strings.LabelPartition}" />
-                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                <ComboBox Grid.Column="0"
-                                          HorizontalAlignment="Stretch"
-                                          ItemsSource="{Binding PartitionItems}"
-                                          SelectedItem="{Binding SelectedPartition}" />
-                                <Button Grid.Column="1"
-                                        Classes="Icon"
-                                        avalonia:Attached.Icon="fa-solid fa-arrows-rotate"
-                                        FontSize="14"
-                                        ToolTip.Tip="{x:Static lang:Strings.ReloadPartition}"
-                                        Command="{Binding LoadPartitionsCommand}" />
-                            </Grid>
-                        </StackPanel>
-
-                        <StackPanel Spacing="6">
-                            <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionSource}" />
-                            <Label Content="{x:Static lang:Strings.LabelFileToFlash}" />
-                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                                <TextBox Grid.Column="0"
-                                         Text="{Binding FlashPartitionFileName}" />
-                                <Button Name="BrowseFlashButton"
-                                        Grid.Column="1"
-                                        Content="{x:Static lang:Strings.BrowseButton}"
-                                        Command="{Binding BrowseFlashFileCommand}"
-                                        CommandParameter="{Binding #BrowseFlashButton}" />
-                            </Grid>
-                        </StackPanel>
-
-                        <StackPanel Spacing="6">
-                            <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionProgress}" />
-                            <ProgressBar Value="{Binding Progress}"
-                                         IsIndeterminate="{Binding IsBackgroundTaskRunning}" />
-                        </StackPanel>
-
-                        <Button Name="WriteButton"
-                                Classes="Primary"
-                                HorizontalAlignment="Right"
-                                Content="{x:Static lang:Strings.WriteButton}"
-                                IsEnabled="{Binding IsFlashButtonEnabled}"
-                                Command="{Binding FlashPartitionCommand}"
-                                CommandParameter="{Binding #WriteButton}" />
-                    </StackPanel>
-                </TabItem>
-
-                <TabItem Header="{x:Static lang:Strings.TabAdvanced}">
-                    <StackPanel Margin="0 20 0 0" Spacing="8">
-                        <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionStatus}" />
-                        <TextBlock Classes="Subtitle" Text="{x:Static lang:Strings.AdvancedComingSoon}" />
-                    </StackPanel>
-                </TabItem>
-
-            </TabControl>
-
+        <!-- ====================================================== -->
+        <!-- Hero                                                    -->
+        <!-- ====================================================== -->
+        <StackPanel Grid.Row="0" Spacing="8" MaxWidth="720" HorizontalAlignment="Left">
+            <TextBlock Classes="SectionLabel" Text="WINPARTFLASH" />
+            <TextBlock Classes="Display" Text="{x:Static lang:Strings.AppName}" />
+            <TextBlock Classes="Subtitle" TextWrapping="Wrap"
+                       Text="{x:Static lang:Strings.AppSubtitle}" />
         </StackPanel>
-    </Border>
+
+        <!-- ====================================================== -->
+        <!-- Shell: nav rail + detail card                           -->
+        <!-- ====================================================== -->
+        <Grid Grid.Row="2" ColumnDefinitions="220,24,*">
+
+            <!-- Nav rail -->
+            <Border Grid.Column="0" Classes="Card" Padding="12">
+                <StackPanel Spacing="4">
+                    <TextBlock Classes="SectionLabel" Margin="12 10 12 8"
+                               Text="{x:Static lang:Strings.SectionNavigation}" />
+                    <ListBox Classes="Nav"
+                             SelectedIndex="{Binding SelectedTabIndex}">
+                        <ListBoxItem>
+                            <Grid ColumnDefinitions="24,*">
+                                <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                                           FontFamily="{StaticResource MonoFont}"
+                                           Classes="NavIndex" Text="01" />
+                                <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                           Text="{x:Static lang:Strings.SavePartition}" />
+                            </Grid>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <Grid ColumnDefinitions="24,*">
+                                <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                                           FontFamily="{StaticResource MonoFont}"
+                                           Classes="NavIndex" Text="02" />
+                                <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                           Text="{x:Static lang:Strings.WritePartition}" />
+                            </Grid>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <Grid ColumnDefinitions="24,*">
+                                <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                                           FontFamily="{StaticResource MonoFont}"
+                                           Classes="NavIndex" Text="03" />
+                                <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                           Text="{x:Static lang:Strings.TabInspect}" />
+                            </Grid>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <Grid ColumnDefinitions="24,*">
+                                <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                                           FontFamily="{StaticResource MonoFont}"
+                                           Classes="NavIndex" Text="04" />
+                                <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                           Text="{x:Static lang:Strings.TabLogging}" />
+                            </Grid>
+                        </ListBoxItem>
+                    </ListBox>
+
+                    <Border Background="{StaticResource LightestGray}" Height="1" Margin="12 16 12 12" />
+
+                    <Button Classes="Icon"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Left"
+                            Padding="12 8"
+                            Command="{Binding LoadPartitionsCommand}">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <avalonia:Icon Value="fa-solid fa-arrows-rotate" FontSize="12" />
+                            <TextBlock Text="{x:Static lang:Strings.ReloadPartition}" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Border>
+
+            <!-- Detail card -->
+            <Border Grid.Column="2" Classes="Card" Padding="32 32 8 32">
+                <Carousel SelectedIndex="{Binding SelectedTabIndex}">
+                    <Carousel.PageTransition>
+                        <CrossFade Duration="0:0:0.28" />
+                    </Carousel.PageTransition>
+
+                    <!-- ========================================= -->
+                    <!-- Save partition                             -->
+                    <!-- ========================================= -->
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Padding="0 0 24 0">
+                        <StackPanel Spacing="22">
+
+                            <StackPanel Spacing="4">
+                                <TextBlock Classes="SectionLabel" Text="STEP 01" />
+                                <TextBlock Classes="SubDisplay"
+                                           Text="{x:Static lang:Strings.SavePartition}" />
+                            </StackPanel>
+
+                            <!-- Source -->
+                            <StackPanel Spacing="10">
+                                <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionSource}" />
+                                <Label Content="{x:Static lang:Strings.LabelPartition}" />
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                    <ComboBox Grid.Column="0"
+                                              HorizontalAlignment="Stretch"
+                                              ItemsSource="{Binding PartitionItems}"
+                                              SelectedItem="{Binding SelectedPartition}" />
+                                    <Button Grid.Column="1"
+                                            Classes="Icon"
+                                            avalonia:Attached.Icon="fa-solid fa-arrows-rotate"
+                                            FontSize="14"
+                                            ToolTip.Tip="{x:Static lang:Strings.ReloadPartition}"
+                                            Command="{Binding LoadPartitionsCommand}" />
+                                </Grid>
+                                <StackPanel Orientation="Horizontal" Spacing="18">
+                                    <CheckBox Content="{x:Static lang:Strings.LabelWholeDiskMode}"
+                                              IsChecked="{Binding WholeDiskMode}" />
+                                    <CheckBox Content="{x:Static lang:Strings.LabelProtectSystemDisk}"
+                                              IsChecked="{Binding ProtectSystemDisk}" />
+                                </StackPanel>
+                            </StackPanel>
+
+                            <Border Background="{StaticResource LightestGray}" Height="1" />
+
+                            <!-- Destination -->
+                            <StackPanel Spacing="10">
+                                <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionDestination}" />
+                                <Label Content="{x:Static lang:Strings.LabelFileToSave}" />
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                    <TextBox Grid.Column="0" Text="{Binding SavePartitionFileName}" />
+                                    <Button Grid.Column="1"
+                                            Name="BrowseSaveButton"
+                                            Content="{x:Static lang:Strings.BrowseButton}"
+                                            Command="{Binding BrowseSaveFileCommand}"
+                                            CommandParameter="{Binding #BrowseSaveButton}" />
+                                </Grid>
+                            </StackPanel>
+
+                            <!-- Format + compression -->
+                            <StackPanel Spacing="10">
+                                <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionFormat}" />
+                                <Label Content="{x:Static lang:Strings.LabelFormat}" />
+                                <StackPanel Orientation="Horizontal" Spacing="20">
+                                    <RadioButton Content="raw" IsChecked="{Binding IsSaveRawFileChecked}" />
+                                    <RadioButton Content="gz" IsChecked="{Binding IsSaveGzipFileChecked}" />
+                                    <RadioButton Content="lz4" IsChecked="{Binding IsSaveLz4FileChecked}" />
+                                    <RadioButton Content="zst" IsChecked="{Binding IsSaveZstandardFileChecked}" />
+                                </StackPanel>
+
+                                <Border Classes="Surface"
+                                        Margin="0 8 0 0"
+                                        IsVisible="{Binding IsProbeCommandVisible}">
+                                    <StackPanel Spacing="12">
+                                        <TextBlock Classes="SectionLabel"
+                                                   Text="{x:Static lang:Strings.SectionCompression}" />
+                                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12"
+                                              IsEnabled="{Binding IsCompressionLevelEnabled}">
+                                            <Label Grid.Column="0" VerticalAlignment="Center"
+                                                   Content="{x:Static lang:Strings.LabelCompressionLevel}" />
+                                            <Slider Grid.Column="1"
+                                                    Minimum="{Binding CompressionLevelMin}"
+                                                    Maximum="{Binding CompressionLevelMax}"
+                                                    TickFrequency="1" IsSnapToTickEnabled="True"
+                                                    Value="{Binding CompressionLevel}" />
+                                            <TextBlock Grid.Column="2" VerticalAlignment="Center"
+                                                       FontFamily="{StaticResource MonoFont}"
+                                                       MinWidth="32" TextAlignment="Right"
+                                                       Text="{Binding CompressionLevel}" />
+                                        </Grid>
+                                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12"
+                                              IsVisible="{Binding IsZstdWorkersEnabled}">
+                                            <Label Grid.Column="0" VerticalAlignment="Center"
+                                                   Content="{x:Static lang:Strings.LabelCompressionWorkers}" />
+                                            <NumericUpDown Grid.Column="1"
+                                                           Minimum="0" Maximum="32" Increment="1"
+                                                           FormatString="0"
+                                                           Value="{Binding ZstdWorkers}" />
+                                        </Grid>
+                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                            <Button Grid.Column="0"
+                                                    Content="{x:Static lang:Strings.ButtonProbeRatio}"
+                                                    Command="{Binding ProbeRatioCommand}" />
+                                            <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                                       Classes="Subtitle" TextWrapping="Wrap"
+                                                       Text="{Binding ProbeResultDisplay}" />
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+
+                            <!-- Progress -->
+                            <Border Classes="Progress">
+                                <StackPanel Spacing="14">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <TextBlock Grid.Column="0"
+                                                   Classes="SectionLabel"
+                                                   Text="{x:Static lang:Strings.SectionProgress}" />
+                                        <TextBlock Grid.Column="1"
+                                                   FontFamily="{StaticResource MonoFont}"
+                                                   FontSize="12"
+                                                   Foreground="{StaticResource MutedSlate}"
+                                                   Text="{Binding Progress, StringFormat={}{0}%}" />
+                                    </Grid>
+                                    <ProgressBar Value="{Binding Progress}"
+                                                 IsIndeterminate="{Binding IsProgressIndeterminate}" />
+                                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="16">
+                                        <StackPanel Grid.Column="0" Spacing="4">
+                                            <TextBlock Classes="SectionLabel"
+                                                       Text="{x:Static lang:Strings.LabelThroughput}" />
+                                            <TextBlock Classes="Metric" Text="{Binding ThroughputDisplay}" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Spacing="4">
+                                            <TextBlock Classes="SectionLabel"
+                                                       Text="{x:Static lang:Strings.LabelEta}" />
+                                            <TextBlock Classes="Metric" Text="{Binding EtaDisplay}" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2" Spacing="4">
+                                            <TextBlock Classes="SectionLabel"
+                                                       Text="{x:Static lang:Strings.LabelElapsed}" />
+                                            <TextBlock Classes="Metric" Text="{Binding ElapsedDisplay}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <Button Name="SaveButton"
+                                    Classes="Primary"
+                                    HorizontalAlignment="Right"
+                                    Content="{x:Static lang:Strings.SaveButton}"
+                                    IsEnabled="{Binding IsSaveButtonEnabled}"
+                                    Command="{Binding SavePartitionCommand}"
+                                    CommandParameter="{Binding #SaveButton}" />
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- ========================================= -->
+                    <!-- Write / flash partition                    -->
+                    <!-- ========================================= -->
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Spacing="22">
+
+                            <StackPanel Spacing="4">
+                                <TextBlock Classes="SectionLabel" Text="STEP 02" />
+                                <TextBlock Classes="SubDisplay"
+                                           Text="{x:Static lang:Strings.WritePartition}" />
+                            </StackPanel>
+
+                            <!-- Target -->
+                            <StackPanel Spacing="10">
+                                <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionTarget}" />
+                                <Label Content="{x:Static lang:Strings.LabelPartition}" />
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                    <ComboBox Grid.Column="0"
+                                              HorizontalAlignment="Stretch"
+                                              ItemsSource="{Binding PartitionItems}"
+                                              SelectedItem="{Binding SelectedPartition}" />
+                                    <Button Grid.Column="1"
+                                            Classes="Icon"
+                                            avalonia:Attached.Icon="fa-solid fa-arrows-rotate"
+                                            FontSize="14"
+                                            ToolTip.Tip="{x:Static lang:Strings.ReloadPartition}"
+                                            Command="{Binding LoadPartitionsCommand}" />
+                                </Grid>
+                                <StackPanel Orientation="Horizontal" Spacing="18">
+                                    <CheckBox Content="{x:Static lang:Strings.LabelWholeDiskMode}"
+                                              IsChecked="{Binding WholeDiskMode}" />
+                                    <CheckBox Content="{x:Static lang:Strings.LabelProtectSystemDisk}"
+                                              IsChecked="{Binding ProtectSystemDisk}" />
+                                </StackPanel>
+                            </StackPanel>
+
+                            <Border Background="{StaticResource LightestGray}" Height="1" />
+
+                            <!-- Source -->
+                            <StackPanel Spacing="10">
+                                <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionSource}" />
+                                <Label Content="{x:Static lang:Strings.LabelFileToFlash}" />
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                    <TextBox Grid.Column="0" Text="{Binding FlashPartitionFileName}" />
+                                    <Button Name="BrowseFlashButton"
+                                            Grid.Column="1"
+                                            Content="{x:Static lang:Strings.BrowseButton}"
+                                            Command="{Binding BrowseFlashFileCommand}"
+                                            CommandParameter="{Binding #BrowseFlashButton}" />
+                                </Grid>
+                                <StackPanel Orientation="Horizontal" Spacing="18" Margin="0 4 0 0">
+                                    <CheckBox Content="{x:Static lang:Strings.LabelVerifyAfterWrite}"
+                                              IsChecked="{Binding VerifyAfterWrite}" />
+                                    <CheckBox Content="{x:Static lang:Strings.LabelEjectAfterFlash}"
+                                              IsChecked="{Binding EjectAfterFlash}" />
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Progress -->
+                            <Border Classes="Progress">
+                                <StackPanel Spacing="14">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <TextBlock Grid.Column="0"
+                                                   Classes="SectionLabel"
+                                                   Text="{x:Static lang:Strings.SectionProgress}" />
+                                        <TextBlock Grid.Column="1"
+                                                   FontFamily="{StaticResource MonoFont}"
+                                                   FontSize="12"
+                                                   Foreground="{StaticResource MutedSlate}"
+                                                   Text="{Binding Progress, StringFormat={}{0}%}" />
+                                    </Grid>
+                                    <ProgressBar Value="{Binding Progress}"
+                                                 IsIndeterminate="{Binding IsProgressIndeterminate}" />
+                                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="16">
+                                        <StackPanel Grid.Column="0" Spacing="4">
+                                            <TextBlock Classes="SectionLabel"
+                                                       Text="{x:Static lang:Strings.LabelThroughput}" />
+                                            <TextBlock Classes="Metric" Text="{Binding ThroughputDisplay}" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Spacing="4">
+                                            <TextBlock Classes="SectionLabel"
+                                                       Text="{x:Static lang:Strings.LabelEta}" />
+                                            <TextBlock Classes="Metric" Text="{Binding EtaDisplay}" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2" Spacing="4">
+                                            <TextBlock Classes="SectionLabel"
+                                                       Text="{x:Static lang:Strings.LabelElapsed}" />
+                                            <TextBlock Classes="Metric" Text="{Binding ElapsedDisplay}" />
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <Button Name="WriteButton"
+                                    Classes="Primary"
+                                    HorizontalAlignment="Right"
+                                    Content="{x:Static lang:Strings.WriteButton}"
+                                    IsEnabled="{Binding IsFlashButtonEnabled}"
+                                    Command="{Binding FlashPartitionCommand}"
+                                    CommandParameter="{Binding #WriteButton}" />
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- ========================================= -->
+                    <!-- Inspect                                    -->
+                    <!-- ========================================= -->
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Padding="0 0 24 0">
+                        <StackPanel Spacing="22">
+                            <StackPanel Spacing="4">
+                                <TextBlock Classes="SectionLabel" Text="STEP 03" />
+                                <TextBlock Classes="SubDisplay"
+                                           Text="{x:Static lang:Strings.TabInspect}" />
+                            </StackPanel>
+
+                            <StackPanel Spacing="10">
+                                <TextBlock Classes="SectionLabel" Text="{x:Static lang:Strings.SectionTarget}" />
+                                <Label Content="{x:Static lang:Strings.LabelPartition}" />
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                    <ComboBox Grid.Column="0"
+                                              HorizontalAlignment="Stretch"
+                                              ItemsSource="{Binding PartitionItems}"
+                                              SelectedItem="{Binding SelectedPartition}" />
+                                    <Button Grid.Column="1"
+                                            Classes="Icon"
+                                            avalonia:Attached.Icon="fa-solid fa-arrows-rotate"
+                                            FontSize="14"
+                                            ToolTip.Tip="{x:Static lang:Strings.ReloadPartition}"
+                                            Command="{Binding LoadPartitionsCommand}" />
+                                </Grid>
+                                <StackPanel Orientation="Horizontal" Spacing="18">
+                                    <CheckBox Content="{x:Static lang:Strings.LabelWholeDiskMode}"
+                                              IsChecked="{Binding WholeDiskMode}" />
+                                    <CheckBox Content="{x:Static lang:Strings.LabelProtectSystemDisk}"
+                                              IsChecked="{Binding ProtectSystemDisk}" />
+                                </StackPanel>
+                            </StackPanel>
+
+                            <ContentControl Content="{Binding Inspect}" />
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- ========================================= -->
+                    <!-- Logging                                    -->
+                    <!-- ========================================= -->
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Spacing="22">
+                            <StackPanel Spacing="4">
+                                <TextBlock Classes="SectionLabel" Text="STEP 04" />
+                                <TextBlock Classes="SubDisplay"
+                                           Text="{x:Static lang:Strings.TabLogging}" />
+                            </StackPanel>
+                            <ContentControl Content="{Binding Logging}" />
+                        </StackPanel>
+                    </ScrollViewer>
+
+                </Carousel>
+            </Border>
+        </Grid>
+    </Grid>
 
     <NativeMenu.Menu>
         <NativeMenu>
             <NativeMenuItem Header="{x:Static lang:Strings.MenuFile}">
                 <NativeMenuItem.Menu>
                     <NativeMenu>
-                        <NativeMenuItem Header="{x:Static lang:Strings.MenuSavePartition}" Gesture="cmd+S" />
-                        <NativeMenuItem Header="{x:Static lang:Strings.MenuFlashPartition}" Gesture="cmd+F" />
-                        <NativeMenuItem Header="{x:Static lang:Strings.MenuAdvanced}" Gesture="cmd+A" />
+                        <NativeMenuItem Header="{x:Static lang:Strings.MenuSavePartition}"
+                                        Gesture="cmd+S"
+                                        Command="{Binding SwitchToSaveTabCommand}" />
+                        <NativeMenuItem Header="{x:Static lang:Strings.MenuFlashPartition}"
+                                        Gesture="cmd+F"
+                                        Command="{Binding SwitchToFlashTabCommand}" />
+                        <NativeMenuItem Header="{x:Static lang:Strings.MenuInspect}"
+                                        Gesture="cmd+I"
+                                        Command="{Binding SwitchToInspectTabCommand}" />
+                        <NativeMenuItem Header="{x:Static lang:Strings.MenuLogging}"
+                                        Gesture="cmd+A"
+                                        Command="{Binding SwitchToLoggingTabCommand}" />
                         <NativeMenuItemSeparator />
-                        <NativeMenuItem Header="{x:Static lang:Strings.MenuSettings}" Gesture="cmd+," />
+                        <NativeMenuItem Header="{x:Static lang:Strings.MenuReloadPartitions}"
+                                        Gesture="cmd+R"
+                                        Command="{Binding LoadPartitionsCommand}" />
                     </NativeMenu>
                 </NativeMenuItem.Menu>
             </NativeMenuItem>

@@ -4,7 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Build & Run
 
-- Build/run GUI: `dotnet build WinPartFlash.sln` / `dotnet run --project WinPartFlash.Gui`
+- Solution file is the XML-format `WinPartFlash.slnx` (no legacy `.sln`); recent `dotnet` SDKs handle it natively.
+- Build/run GUI: `dotnet build WinPartFlash.slnx` / `dotnet run --project WinPartFlash.Gui`
 - Publish (single-file, framework-dependent): `dotnet publish WinPartFlash.Gui -r <win-x64|win-arm64|osx-arm64> -c Release`
 - On macOS the GUI csproj has a `BuildBinMac` target that runs `WinPartFlash.Gui/scripts/macos_build_binary.sh`, which CMake-builds `WinPartFlashLib` and copies `libWinPartFlashLib.dylib` next to the GUI binary. Building on macOS therefore requires `cmake`.
 - Build the native lib by hand: `cmake -S WinPartFlashLib -B WinPartFlashLib/build -DCMAKE_BUILD_TYPE=Release && cmake --build WinPartFlashLib/build`

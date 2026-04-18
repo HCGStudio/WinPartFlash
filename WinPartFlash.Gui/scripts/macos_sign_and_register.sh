@@ -128,13 +128,17 @@ codesign --force --options runtime --timestamp \
 codesign --verify --strict --verbose=2 "$APP"
 
 # Rebuild the dmg from the now-signed bundle so the image contains signed bits.
-# Stage alongside an /Applications symlink so the mounted image shows the
-# familiar drag-and-drop install target.
+# Stage alongside an /Applications symlink (drag-drop install target) and
+# move the bundle into staging rather than copying — self-contained
+# payloads are ~100 MB and CI runners can run out of space otherwise.
 rm -f "$DMG"
-STAGE=$(mktemp -d "${TMPDIR:-/tmp}/wpf-dmg.XXXXXX")
-cp -R "$APP" "$STAGE/"
+STAGE="$PUBLISH_DIR/.dmg-stage"
+rm -rf "$STAGE"
+mkdir -p "$STAGE"
+mv "$APP" "$STAGE/"
 ln -s /Applications "$STAGE/Applications"
 hdiutil create -volname "WinPartFlash" -srcfolder "$STAGE" -ov -format UDZO "$DMG"
+mv "$STAGE/WinPartFlash.app" "$APP"
 rm -rf "$STAGE"
 codesign --force --timestamp --sign "$APPLE_DEVELOPER_ID_NAME" "$DMG"
 

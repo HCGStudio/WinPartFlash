@@ -80,10 +80,17 @@ fi
 # symlink as the familiar "Applications" folder icon.  UDZO is the
 # standard format Finder mounts without complaint and is what
 # `notarytool` accepts as a submission payload.
-STAGE=$(mktemp -d "${TMPDIR:-/tmp}/wpf-dmg.XXXXXX")
-cp -R "$APP" "$STAGE/"
+#
+# Move (not copy) the bundle into the staging dir so we don't transiently
+# double disk usage — the self-contained payload is ~100 MB and CI
+# runners can be tight on space.
+STAGE="$PUBLISH_DIR/.dmg-stage"
+rm -rf "$STAGE"
+mkdir -p "$STAGE"
+mv "$APP" "$STAGE/"
 ln -s /Applications "$STAGE/Applications"
 hdiutil create -volname "WinPartFlash" -srcfolder "$STAGE" -ov -format UDZO "$DMG"
+mv "$STAGE/WinPartFlash.app" "$APP"
 rm -rf "$STAGE"
 
 echo "Packaged: $APP"

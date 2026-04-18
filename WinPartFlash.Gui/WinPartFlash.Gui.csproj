@@ -17,8 +17,29 @@
         <AvaloniaResource Include="Assets\**"/>
     </ItemGroup>
 
-    <Target Name="BuildBinMac" BeforeTargets="Build" Condition="$([MSBuild]::IsOSPlatform('OSX'))">
+    <Target Name="BuildBinMac" BeforeTargets="AssignTargetPaths" Condition="$([MSBuild]::IsOSPlatform('OSX'))">
         <Exec Command="sh ./scripts/macos_build_binary.sh"/>
+        <!-- Register Content items here rather than at evaluation time so they
+             only exist once the cmake outputs have been produced.  Declaring
+             them statically at the top level makes MSBuild fail when the files
+             aren't already on disk (e.g. a clean CI checkout). -->
+        <ItemGroup>
+            <Content Include="libWinPartFlashLib.dylib">
+                <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+                <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+                <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            </Content>
+            <Content Include="com.hcgstudio.winpartflash.helper">
+                <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+                <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+                <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            </Content>
+            <Content Include="com.hcgstudio.winpartflash.helper.plist">
+                <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+                <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+                <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            </Content>
+        </ItemGroup>
     </Target>
 
     <Target Name="CleanBinMac" BeforeTargets="Clean" Condition="$([MSBuild]::IsOSPlatform('OSX'))">
@@ -53,24 +74,6 @@
         <PackageReference Include="SharpCompress" Version="0.47.4"/>
         <PackageReference Include="System.Management" Version="10.0.6"/>
         <PackageReference Include="ZstdSharp.Port" Version="0.8.7"/>
-    </ItemGroup>
-
-    <ItemGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
-        <Content Include="libWinPartFlashLib.dylib">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        </Content>
-        <Content Include="com.hcgstudio.winpartflash.helper">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        </Content>
-        <Content Include="com.hcgstudio.winpartflash.helper.plist">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        </Content>
     </ItemGroup>
 
     <ItemGroup>

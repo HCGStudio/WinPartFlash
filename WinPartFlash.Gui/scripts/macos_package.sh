@@ -58,6 +58,11 @@ fi
 chmod +x "$APP/Contents/MacOS/$EXECUTABLE"
 [ -f "$APP/Contents/MacOS/com.hcgstudio.winpartflash.helper" ] && chmod +x "$APP/Contents/MacOS/com.hcgstudio.winpartflash.helper"
 
+# PDBs are .NET debug symbols, not Mach-O.  codesign treats any file next to a
+# signed binary as a nested subcomponent and refuses to seal the bundle when
+# it finds one that isn't itself signable, so strip them before signing.
+find "$APP/Contents/MacOS" -name '*.pdb' -delete
+
 # Materialise Info.plist from the template.
 sed -e "s/__EXECUTABLE__/$EXECUTABLE/g" -e "s/__VERSION__/$VERSION/g" \
     "$TEMPLATE" > "$APP/Contents/Info.plist"

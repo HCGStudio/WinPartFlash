@@ -1,0 +1,49 @@
+name: build
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: ${{ matrix.rid }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            rid: osx-arm64
+          - os: windows-latest
+            rid: win-x64
+          - os: ubuntu-latest
+            rid: linux-x64
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      # macOS publish triggers the BuildBinMac MSBuild target which CMake-builds
+      # libWinPartFlashLib.dylib AND com.hcgstudio.winpartflash.helper.  The helper is
+      # required for the GUI to elevate without sudo at runtime.
+      - name: Publish
+        run: dotnet publish WinPartFlash.Gui -c Release -r ${{ matrix.rid }} -o publish
+
+      - uses: actions/upload-artifact@v4
+        if: matrix.rid != 'osx-arm64'
+        with:
+          name: WinPartFlash-${{ matrix.rid }}
+          path: publish/
+          if-no-files-found: error
+
+      # macOS publish runs the PackageMac MSBuild target which produces a
+      # WinPartFlash.app bundle and a .dmg next to it.  Ship just the dmg.
+      - uses: actions/upload-artifact@v4
+        if: matrix.rid == 'osx-arm64'
+        with:
+          name: WinPartFlash-${{ matrix.rid }}
+          path: publish/*.dmg
+          if-no-files-found: error

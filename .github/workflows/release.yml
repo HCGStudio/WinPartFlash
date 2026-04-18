@@ -1,0 +1,117 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (without leading v, e.g. 0.2.0). Defaults to the tag.'
+        required: false
+
+jobs:
+  build:
+    name: ${{ matrix.rid }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            rid: osx-arm64
+          - os: windows-latest
+            rid: win-x64
+          - os: ubuntu-latest
+            rid: linux-x64
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Resolve version
+        id: ver
+        shell: bash
+        run: |
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            v="${{ github.event.inputs.version }}"
+          else
+            v="${GITHUB_REF_NAME#v}"
+          fi
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+
+      - name: Publish
+        run: dotnet publish WinPartFlash.Gui -c Release -r ${{ matrix.rid }} -o publish -p:Version=${{ steps.ver.outputs.version }}
+
+      # macOS only: sign + notarize the .app and produce a stapled .dmg.
+      # Skipped if signing secrets are absent (e.g. fork PR build).
+      - name: Sign and notarize macOS bundle
+        if: matrix.rid == 'osx-arm64' && env.APPLE_DEVELOPER_ID_NAME != ''
+        env:
+          APPLE_DEVELOPER_ID_NAME: ${{ secrets.APPLE_DEVELOPER_ID_NAME }}
+          APPLE_DEVELOPER_ID_P12_BASE64: ${{ secrets.APPLE_DEVELOPER_ID_P12_BASE64 }}
+          APPLE_DEVELOPER_ID_P12_PASSWORD: ${{ secrets.APPLE_DEVELOPER_ID_P12_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_NOTARY_USER: ${{ secrets.APPLE_NOTARY_USER }}
+          APPLE_NOTARY_PASSWORD: ${{ secrets.APPLE_NOTARY_PASSWORD }}
+        run: sh WinPartFlash.Gui/scripts/macos_sign_and_register.sh publish ${{ steps.ver.outputs.version }}
+
+      - name: Stage release artifact
+        shell: bash
+        run: |
+          mkdir -p release
+          case "${{ matrix.rid }}" in
+            osx-arm64)
+              cp publish/WinPartFlash-${{ steps.ver.outputs.version }}.dmg release/
+              ;;
+            win-x64)
+              cd publish && 7z a -tzip ../release/WinPartFlash-${{ steps.ver.outputs.version }}-win-x64.zip . && cd ..
+              ;;
+            linux-x64)
+              tar -C publish -czf release/WinPartFlash-${{ steps.ver.outputs.version }}-linux-x64.tar.gz .
+              ;;
+          esac
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ matrix.rid }}
+          path: release/
+          if-no-files-found: error
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: release
+          pattern: release-*
+          merge-multiple: true
+
+      - name: Resolve version
+        id: ver
+        shell: bash
+        run: |
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            v="${{ github.event.inputs.version }}"
+            tag="v$v"
+          else
+            v="${GITHUB_REF_NAME#v}"
+            tag="${GITHUB_REF_NAME}"
+          fi
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ steps.ver.outputs.tag }}" \
+            --title "WinPartFlash ${{ steps.ver.outputs.version }}" \
+            --generate-notes \
+            release/*

@@ -53,8 +53,8 @@
         <comment>A button to write a file content to a partition.</comment>
     </data>
     <data name="ErrorNoPartition" xml:space="preserve">
-        <value>No partition found on your device, try re-run this app with "sudo".</value>
-        <comment>A error message to tell user no partition found on device, and suggest to run with sudo.</comment>
+        <value>No partitions were found on your device.</value>
+        <comment>A error message to tell user no partition found on device.</comment>
     </data>
     <data name="LabelFileToSave" xml:space="preserve">
         <value>File to save</value>
@@ -143,5 +143,25 @@
     <data name="ConfirmDialogTitle" xml:space="preserve">
         <value>Confirm</value>
         <comment>Title of the confirmation dialog shown before flashing.</comment>
+    </data>
+    <data name="ErrorPrivilegedHelperUnavailable" xml:space="preserve">
+        <value>The privileged helper could not be reached. Make sure WinPartFlash was installed correctly so the helper binary lives next to the GUI.</value>
+        <comment>Shown when the macOS privileged helper binary is missing or fails to launch.</comment>
+    </data>
+    <data name="ErrorPrivilegedAuthorizationCancelled" xml:space="preserve">
+        <value>Authorization was cancelled. The disk operation was not performed.</value>
+        <comment>Shown when the user dismisses the macOS administrator prompt.</comment>
+    </data>
+    <data name="ErrorPrivilegedAuthorizationFailed" xml:space="preserve">
+        <value>Authorization failed: {0}</value>
+        <comment>Shown when macOS rejects the elevation attempt; {0} is the underlying error.</comment>
+    </data>
+    <data name="ErrorDeviceBusy" xml:space="preserve">
+        <value>The target device is in use. Try unmounting it from Finder or Disk Utility and try again.</value>
+        <comment>Shown when the raw block device cannot be opened because it is mounted or held by another process.</comment>
+    </data>
+    <data name="InfoPrivilegedFallbackInUse" xml:space="preserve">
+        <value>Using the per-operation authorization fallback because the LaunchDaemon is not registered on this build.</value>
+        <comment>Diagnostic message shown when the SMAppService daemon path is unavailable and the GUI falls back to osascript.</comment>
     </data>
 </root>

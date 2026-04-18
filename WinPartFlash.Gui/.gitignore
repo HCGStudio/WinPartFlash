@@ -1,1 +1,5 @@
 *.dylib
+# Build artifacts copied here by scripts/macos_build_binary.sh; sources live in
+# WinPartFlashHelper/.
+com.hcgstudio.winpartflash.helper
+com.hcgstudio.winpartflash.helper.plist

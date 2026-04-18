@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  LaunchDaemon plist for the SMAppService production path.
+
+  This plist must be placed at:
+    <App>.app/Contents/Library/LaunchDaemons/com.hcgstudio.winpartflash.helper.plist
+  and the helper at:
+    <App>.app/Contents/MacOS/com.hcgstudio.winpartflash.helper
+
+  SMAppService.daemon(plistName:).register() will only succeed if the .app
+  bundle is signed with a Developer ID Application identity AND the
+  SMAuthorizedClients code requirement below matches the GUI's signing
+  identity.  Replace TEAMID with the actual team ID before signing.
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.hcgstudio.winpartflash.helper</string>
+
+    <key>BundleProgram</key>
+    <string>Contents/MacOS/com.hcgstudio.winpartflash.helper</string>
+
+    <key>MachServices</key>
+    <dict>
+        <key>com.hcgstudio.winpartflash.helper</key>
+        <true/>
+    </dict>
+
+    <key>SMAuthorizedClients</key>
+    <array>
+        <string>identifier "com.hcgstudio.winpartflash.gui" and anchor apple generic and certificate leaf[subject.OU] = "TEAMID"</string>
+    </array>
+
+    <key>ProcessType</key>
+    <string>Interactive</string>
+</dict>
+</plist>

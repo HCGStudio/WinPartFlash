@@ -4,8 +4,10 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using WinPartFlash.Gui.Compression;
 using WinPartFlash.Gui.FileOpenHelper;
+using WinPartFlash.Gui.MacOS;
 using WinPartFlash.Gui.PartitionDetector;
 using WinPartFlash.Gui.Resources;
 using WinPartFlash.Gui.Utils;
@@ -27,6 +29,14 @@ public class App : Application
         // Why this is not set automatically?
         Strings.Culture = CultureInfo.CurrentUICulture;
         var services = new ServiceCollection();
+        services.AddLogging(builder => builder
+            .AddSimpleConsole(opt =>
+            {
+                opt.SingleLine = true;
+                opt.TimestampFormat = "HH:mm:ss.fff ";
+            })
+            .SetMinimumLevel(LogLevel.Information));
+        services.AddMacOSPrivileges();
         services.AddPartitionDetector();
         services.AddCompressionStreamCopier();
         services.AddViewsAndViewModels();

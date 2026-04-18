@@ -224,5 +224,35 @@ namespace WinPartFlash.Gui.Resources {
                 return ResourceManager.GetString("ConfirmDialogTitle", resourceCulture);
             }
         }
+
+        public static string ErrorPrivilegedHelperUnavailable {
+            get {
+                return ResourceManager.GetString("ErrorPrivilegedHelperUnavailable", resourceCulture);
+            }
+        }
+
+        public static string ErrorPrivilegedAuthorizationCancelled {
+            get {
+                return ResourceManager.GetString("ErrorPrivilegedAuthorizationCancelled", resourceCulture);
+            }
+        }
+
+        public static string ErrorPrivilegedAuthorizationFailed {
+            get {
+                return ResourceManager.GetString("ErrorPrivilegedAuthorizationFailed", resourceCulture);
+            }
+        }
+
+        public static string ErrorDeviceBusy {
+            get {
+                return ResourceManager.GetString("ErrorDeviceBusy", resourceCulture);
+            }
+        }
+
+        public static string InfoPrivilegedFallbackInUse {
+            get {
+                return ResourceManager.GetString("InfoPrivilegedFallbackInUse", resourceCulture);
+            }
+        }
     }
 }

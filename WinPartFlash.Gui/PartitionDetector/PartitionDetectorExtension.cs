@@ -12,7 +12,9 @@ public static class PartitionDetectorExtension
         else if (OperatingSystem.IsLinux())
             services.AddSingleton<IPartitionDetector, LinuxPartitionDetector>();
         else if (OperatingSystem.IsMacOS())
-            services.AddSingleton<IPartitionDetector, MacOsPartitionDetector>();
+            services.AddSingleton<IPartitionDetector, MacOSPartitionDetector>();
+        // ^ macOS detector requires MacOSPrivilegedDiskGatewayFactory; that
+        // service is registered by AddMacOSPrivileges() in App startup.
         else
             throw new NotSupportedException("The app is not supported on this platform.");
 

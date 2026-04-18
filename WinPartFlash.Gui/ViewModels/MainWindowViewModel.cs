@@ -13,6 +13,7 @@ using MsBox.Avalonia.Enums;
 using ReactiveUI;
 using WinPartFlash.Gui.Compression;
 using WinPartFlash.Gui.FileOpenHelper;
+using WinPartFlash.Gui.MacOS;
 using WinPartFlash.Gui.PartitionDetector;
 using WinPartFlash.Gui.Resources;
 using WinPartFlash.Gui.Utils;
@@ -315,9 +316,10 @@ public class MainWindowViewModel : ViewModelBase
         catch (Exception ex)
         {
             var topWindow = GetVisualTopWindow(sender);
+            var (title, body) = MapPrivilegedException(ex);
             var box = MessageBoxManager.GetMessageBoxStandard(
-                ex.Message,
-                ex.StackTrace,
+                title,
+                body,
                 ButtonEnum.Ok,
                 Icon.Error);
 
@@ -362,9 +364,10 @@ public class MainWindowViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
+            var (title, body) = MapPrivilegedException(ex);
             var box = MessageBoxManager.GetMessageBoxStandard(
-                ex.Message,
-                ex.StackTrace,
+                title,
+                body,
                 ButtonEnum.Ok,
                 Icon.Error);
 
@@ -377,5 +380,27 @@ public class MainWindowViewModel : ViewModelBase
         {
             IsBackgroundTaskRunning = false;
         }
+    }
+
+    /// <summary>
+    /// Translates the macOS privileged-disk gateway's typed exceptions into
+    /// user-friendly localized titles + bodies.  Falls back to the underlying
+    /// exception's message + stack trace for anything we don't recognise.
+    /// </summary>
+    private static (string Title, string Body) MapPrivilegedException(Exception ex)
+    {
+        return ex switch
+        {
+            PrivilegedAuthorizationCancelledException
+                => (Strings.ConfirmDialogTitle, Strings.ErrorPrivilegedAuthorizationCancelled),
+            PrivilegedHelperUnavailableException
+                => (Strings.ConfirmDialogTitle, Strings.ErrorPrivilegedHelperUnavailable),
+            PrivilegedAuthorizationFailedException
+                => (Strings.ConfirmDialogTitle,
+                    string.Format(Strings.ErrorPrivilegedAuthorizationFailed, ex.Message)),
+            DeviceBusyException
+                => (Strings.ConfirmDialogTitle, Strings.ErrorDeviceBusy),
+            _ => (ex.Message, ex.StackTrace ?? string.Empty)
+        };
     }
 }

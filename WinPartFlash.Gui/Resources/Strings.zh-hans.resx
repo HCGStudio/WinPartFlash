@@ -37,7 +37,7 @@
         <value>刷写</value>
     </data>
     <data name="ErrorNoPartition" xml:space="preserve">
-        <value>无法找到分区，尝试使用“sudo”运行本程序。</value>
+        <value>未在设备上找到任何分区。</value>
     </data>
     <data name="LabelFileToSave" xml:space="preserve">
         <value>保存文件名</value>
@@ -104,5 +104,20 @@
     </data>
     <data name="ConfirmDialogTitle" xml:space="preserve">
         <value>确认</value>
+    </data>
+    <data name="ErrorPrivilegedHelperUnavailable" xml:space="preserve">
+        <value>无法访问特权辅助程序。请确认 WinPartFlash 已正确安装，辅助程序与主程序位于同一目录下。</value>
+    </data>
+    <data name="ErrorPrivilegedAuthorizationCancelled" xml:space="preserve">
+        <value>授权已取消，未执行磁盘操作。</value>
+    </data>
+    <data name="ErrorPrivilegedAuthorizationFailed" xml:space="preserve">
+        <value>授权失败：{0}</value>
+    </data>
+    <data name="ErrorDeviceBusy" xml:space="preserve">
+        <value>目标设备正被占用。请先在 Finder 或磁盘工具中卸载该卷后重试。</value>
+    </data>
+    <data name="InfoPrivilegedFallbackInUse" xml:space="preserve">
+        <value>当前构建未注册 LaunchDaemon，正在使用按操作授权的回退路径。</value>
     </data>
 </root>

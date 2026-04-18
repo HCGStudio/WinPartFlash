@@ -26,9 +26,9 @@ jobs:
             rid: linux-x64
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
 
@@ -76,7 +76,7 @@ jobs:
               ;;
           esac
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: release-${{ matrix.rid }}
           path: release/
@@ -88,7 +88,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           path: release
           pattern: release-*
@@ -113,6 +113,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "${{ steps.ver.outputs.tag }}" \
+            --repo "${{ github.repository }}" \
             --title "WinPartFlash ${{ steps.ver.outputs.version }}" \
             --generate-notes \
             release/*

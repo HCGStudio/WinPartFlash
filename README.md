@@ -29,7 +29,7 @@ dotnet build WinPartFlash.slnx
 # Run the GUI
 dotnet run --project WinPartFlash.Gui
 
-# Publish a single-file, framework-dependent binary
+# Publish a single-file, self-contained binary
 dotnet publish WinPartFlash.Gui -r win-x64     -c Release
 dotnet publish WinPartFlash.Gui -r win-arm64   -c Release
 dotnet publish WinPartFlash.Gui -r osx-arm64   -c Release

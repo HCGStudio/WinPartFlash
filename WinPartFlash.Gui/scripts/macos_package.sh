@@ -89,7 +89,13 @@ rm -rf "$STAGE"
 mkdir -p "$STAGE"
 mv "$APP" "$STAGE/"
 ln -s /Applications "$STAGE/Applications"
-hdiutil create -volname "WinPartFlash" -srcfolder "$STAGE" -ov -format UDZO "$DMG"
+# Pre-size the image: hdiutil's auto-sizing is conservative and has been
+# known to fail with "No space left on device" on CI runners.  Use the
+# staged size plus 64 MiB of slack.
+STAGE_MB=$(du -sm "$STAGE" | awk '{print $1}')
+IMAGE_MB=$((STAGE_MB + 64))
+hdiutil create -volname "WinPartFlash" -srcfolder "$STAGE" \
+    -size "${IMAGE_MB}m" -ov -format UDZO "$DMG"
 mv "$STAGE/WinPartFlash.app" "$APP"
 rm -rf "$STAGE"
 

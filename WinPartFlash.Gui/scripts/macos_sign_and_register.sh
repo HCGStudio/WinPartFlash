@@ -137,7 +137,10 @@ rm -rf "$STAGE"
 mkdir -p "$STAGE"
 mv "$APP" "$STAGE/"
 ln -s /Applications "$STAGE/Applications"
-hdiutil create -volname "WinPartFlash" -srcfolder "$STAGE" -ov -format UDZO "$DMG"
+STAGE_MB=$(du -sm "$STAGE" | awk '{print $1}')
+IMAGE_MB=$((STAGE_MB + 64))
+hdiutil create -volname "WinPartFlash" -srcfolder "$STAGE" \
+    -size "${IMAGE_MB}m" -ov -format UDZO "$DMG"
 mv "$STAGE/WinPartFlash.app" "$APP"
 rm -rf "$STAGE"
 codesign --force --timestamp --sign "$APPLE_DEVELOPER_ID_NAME" "$DMG"

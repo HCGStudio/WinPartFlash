@@ -132,13 +132,23 @@ public sealed partial class OsascriptPrivilegedDiskGateway : IPrivilegedDiskGate
             }
 
             LogStreamReady(op, device);
+            var helperProcess = process;
             return new HelperBackedStream(
                 connection,
                 listener,
-                process,
                 socketPath,
                 access,
-                _logger);
+                _logger,
+                onDispose: () =>
+                {
+                    try
+                    {
+                        if (!helperProcess.WaitForExit(TimeSpan.FromSeconds(5)))
+                            helperProcess.Kill(entireProcessTree: true);
+                    }
+                    catch { /* ignore */ }
+                    helperProcess.Dispose();
+                });
         }
         catch
         {
@@ -251,95 +261,4 @@ public sealed partial class OsascriptPrivilegedDiskGateway : IPrivilegedDiskGate
 
     [DllImport("libc", EntryPoint = "chmod", SetLastError = true)]
     private static extern int Chmod(string path, uint mode);
-
-    /// <summary>
-    /// Stream that wraps the AF_UNIX connection to the helper and owns the
-    /// helper process + listener + socket file lifecycle.
-    /// </summary>
-    private sealed partial class HelperBackedStream : Stream
-    {
-        private readonly NetworkStream _inner;
-        private readonly Socket _connection;
-        private readonly Socket _listener;
-        private readonly Process _helper;
-        private readonly string _socketPath;
-        private readonly FileAccess _access;
-        private bool _disposed;
-
-        public HelperBackedStream(
-            Socket connection, Socket listener, Process helper,
-            string socketPath, FileAccess access,
-            ILogger logger)
-        {
-            _connection = connection;
-            _listener = listener;
-            _helper = helper;
-            _socketPath = socketPath;
-            _access = access;
-            _logger = logger;
-            _inner = new(connection, ownsSocket: false);
-        }
-
-        private readonly ILogger _logger;
-
-        public override bool CanRead => _access.HasFlag(FileAccess.Read);
-        public override bool CanWrite => _access.HasFlag(FileAccess.Write);
-        public override bool CanSeek => false;
-        public override long Length => throw new NotSupportedException();
-        public override long Position
-        {
-            get => throw new NotSupportedException();
-            set => throw new NotSupportedException();
-        }
-        public override void Flush() => _inner.Flush();
-        public override Task FlushAsync(CancellationToken ct) => _inner.FlushAsync(ct);
-        public override int Read(byte[] buffer, int offset, int count) => _inner.Read(buffer, offset, count);
-        public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken ct)
-            => _inner.ReadAsync(buffer, offset, count, ct);
-        public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken ct = default)
-            => _inner.ReadAsync(buffer, ct);
-        public override void Write(byte[] buffer, int offset, int count) => _inner.Write(buffer, offset, count);
-        public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken ct)
-            => _inner.WriteAsync(buffer, offset, count, ct);
-        public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken ct = default)
-            => _inner.WriteAsync(buffer, ct);
-        public override long Seek(long o, SeekOrigin or) => throw new NotSupportedException();
-        public override void SetLength(long v) => throw new NotSupportedException();
-
-        protected override void Dispose(bool disposing)
-        {
-            if (_disposed) return;
-            _disposed = true;
-
-            try
-            {
-                if (CanWrite)
-                    try { _connection.Shutdown(SocketShutdown.Send); } catch { /* ignore */ }
-
-                _inner.Dispose();
-                _connection.Dispose();
-                _listener.Dispose();
-
-                // Give the helper up to a few seconds to finish flushing+exiting cleanly.
-                try
-                {
-                    if (!_helper.WaitForExit(TimeSpan.FromSeconds(5)))
-                        _helper.Kill(entireProcessTree: true);
-                }
-                catch { /* ignore */ }
-                _helper.Dispose();
-
-                try { File.Delete(_socketPath); } catch { /* ignore */ }
-                LogStreamDisposed();
-            }
-            finally
-            {
-                base.Dispose(disposing);
-            }
-        }
-
-        [LoggerMessage(EventId = 220, Level = LogLevel.Information,
-            Message = "Privileged stream disposed; helper exited.")]
-        private partial void LogStreamDisposed();
-    }
 }

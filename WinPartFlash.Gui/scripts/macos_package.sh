@@ -75,9 +75,16 @@ else
     echo "Warning: app-icon.icns not found at $ICON_SRC" >&2
 fi
 
-# Build a read-only compressed dmg.  UDZO is the standard format Finder mounts
-# without complaint and is what `notarytool` accepts as a submission payload.
-hdiutil create -volname "WinPartFlash" -srcfolder "$APP" -ov -format UDZO "$DMG"
+# Build a read-only compressed dmg.  Stage the .app alongside a symlink
+# to /Applications so users can drag-drop to install; Finder renders the
+# symlink as the familiar "Applications" folder icon.  UDZO is the
+# standard format Finder mounts without complaint and is what
+# `notarytool` accepts as a submission payload.
+STAGE=$(mktemp -d "${TMPDIR:-/tmp}/wpf-dmg.XXXXXX")
+cp -R "$APP" "$STAGE/"
+ln -s /Applications "$STAGE/Applications"
+hdiutil create -volname "WinPartFlash" -srcfolder "$STAGE" -ov -format UDZO "$DMG"
+rm -rf "$STAGE"
 
 echo "Packaged: $APP"
 echo "Image:    $DMG"

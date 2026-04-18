@@ -128,8 +128,14 @@ codesign --force --options runtime --timestamp \
 codesign --verify --strict --verbose=2 "$APP"
 
 # Rebuild the dmg from the now-signed bundle so the image contains signed bits.
+# Stage alongside an /Applications symlink so the mounted image shows the
+# familiar drag-and-drop install target.
 rm -f "$DMG"
-hdiutil create -volname "WinPartFlash" -srcfolder "$APP" -ov -format UDZO "$DMG"
+STAGE=$(mktemp -d "${TMPDIR:-/tmp}/wpf-dmg.XXXXXX")
+cp -R "$APP" "$STAGE/"
+ln -s /Applications "$STAGE/Applications"
+hdiutil create -volname "WinPartFlash" -srcfolder "$STAGE" -ov -format UDZO "$DMG"
+rm -rf "$STAGE"
 codesign --force --timestamp --sign "$APPLE_DEVELOPER_ID_NAME" "$DMG"
 
 # Submit to Apple notary service and wait for the verdict.
